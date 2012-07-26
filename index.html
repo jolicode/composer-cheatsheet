@@ -62,7 +62,6 @@
 
           $('.title').html(key);
           if (undefined != schema['properties'][key]) {
-            console.log(schema['properties'][key], schema['properties'][key].type);
             $('.type').html((undefined != schema['properties'][key]['type'])? schema['properties'][key]['type']: '');
           } else {
             $('.type').html('');
