@@ -14,7 +14,7 @@
       "version": "This must follow the format of <code>X.Y.Z</code> with an optional suffix of <code>-dev</code>, <code>alphaN</code>, <code>-betaN</code> or <code>-RCN</code>.<br /><br />Examples:<br /><br /><pre><code>1.0.0<br />1.0.2<br />1.1.0<br />0.2.5<br />1.0.0-dev<br />1.0.0-beta2<br />1.0.0-RC5<br /><br /></code></pre>Optional if the package repository can infer the version from somewhere, such as the VCS tag name in the VCS repository. In that case it is also recommended to omit it.",
       "type": "<p>Package types are used for custom installation logic. If you have a package that needs some special logic, you can define a custom type. This could be a <code>symfony-bundle</code>, a <code>wordpress-plugin</code> or a <code>typo3-module</code>. These types will all be specific to certain projects, and they will need to provide an installer capable of installing packages of that type.</p>",
       "keywords": "An array of keywords that the package is related to. These can be used for searching and filtering.",
-      "hompage": "An URL to the website of the project.",
+      "homepage": "An URL to the website of the project.",
       "time": "Release date of the version.<br />Must be in <code>YYYY-MM-DD</code> or <code>YYYY-MM-DD HH:MM:SS</code> format.",
       "license": "The license of the package. This can be either a string or an array of strings.",
       "authors": "The authors of the package. This is an array of objects.",
@@ -35,7 +35,7 @@
       "replace": "Lists packages that are replaced by this package. This allows you to fork a package, publish it under a different name with its own version numbers, while packages requiring the original package continue to work with your fork because it replaces the original package.<br /><br />This is also useful for packages that contain sub-packages, for example the main symfony/symfony package contains all the Symfony Components which are also available as individual packages. If you require the main package it will automatically fulfill any requirement of one of the individual components, since it replaces them.<br /><br />Caution is advised when using replace for the sub-package purpose explained above. You should then typically only replace using <code>self.version</code> as a version constraint, to make sure the main package only replaces the sub-packages of that exact version, and not any other version, which would be incorrect.",
       "provide": "List of other packages that are provided by this package. This is mostly useful for common interfaces. A package could depend on some virtual <code>logger</code> package, any library that implements this logger interface would simply list it in <code>provide</code>.",
       "suggest": "Suggested packages that can enhance or work well with this package. These are just informational and are displayed after the package is installed, to give your users a hint that they could add more packages, even though they are not strictly required.<br />The format is like package links above, except that the values are free text and not version constraints.",
-      "autoload": "",
+      "autoload": "Autoload mapping for a PHP autoloader.<br/><br/>Currently <a href=\"https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md\">PSR-0</a> autoloading, classmap generation and files are supported. PSR-0 is the recommended way though since it offers greater flexibility (no need to regenerate the autoloader when you add classes).<br /><br />Under the <code>psr-0</code> key you define a mapping from namespaces to paths, relative to the package root. Note that this also supports the PEAR-style non-namespaced convention.",
       "target-dir": "Defines the installation target.<br /><br />In case the package root is below the namespace declaration you cannot autoload properly. target-dir solves this problem.<br /><br />An example is Symfony. There are individual packages for the components. The Yaml component is under <code>Symfony\\Component\\Yaml</code>. The package root is that Yaml directory. To make autoloading possible, we need to make sure that it is not installed into <code>vendor/symfony/yaml</code>, but instead into <code>vendor/symfony/yaml/Symfony/Component/Yaml</code>, so that the autoloader can load it from <code>vendor/symfony/yaml</code>.",
       "minimum-stability": "This defines the default behavior for filtering packages by stability. This defaults to <code>stable</code>, so if you rely on a <code>dev</code> package, you should specify it in your file to avoid surprises.<br />All versions of each package are checked for stability, and those that are less stable than the <code>minimum-stability</code> setting will be ignored when resolving your project dependencies. Specific changes to the stability requirements of a given package can be done in <code>require</code> or <code>require-dev</code>.Available options are <code>dev</code>, <code>alpha</code>, <code>beta</code>, <code>RC</code>, and <code>stable</code>.",
       "repositories": "Custom package repositories to use.",
@@ -43,6 +43,13 @@
       "scripts": "Composer allows you to hook into various parts of the installation process through the use of scripts.",
       "extra": "Arbitrary extra data for consumption by <code>scripts</code>.<br />This can be virtually anything. To access it from within a script event handler, you can do:<br /><pre><code>$extra = $event-&gt;getComposer()-&gt;getPackage()-&gt;getExtra();</code></pre>",
       "bin": "A set of files that should be treated as binaries and symlinked into the <code>bin-dir</code> (from config).",
+      "phar-init": "Creates a basic composer.json file in current directory.",
+      "phar-create-project": "Create new project from a package into given directory.",
+      "phar-search": "Search for packages",
+      "phar-require": "Adds required packages to your composer.json and installs them.",
+      "phar-install": "Parses the composer.json file and downloads the needed dependencies.",
+      "phar-update": "Updates your dependencies to the latest version, and updates the composer.lock file.",
+      "phar-validate": "Validates a composer.json",
     };
 
       $(document).ready(function(){
@@ -56,13 +63,19 @@
         $('.composer .pair').mouseover(function(e){
           var el = this;
           $('.doc').css('top', $(document).scrollTop() + (50) + 'px')
-
           var prefix = (undefined != $('.key', el).attr('data-prefix'))? $('.key', el).attr('data-prefix'):'';
           var key = prefix+$('.key', el).html().replace(/"/g, '');
 
           $('.title').html(key);
-          if (undefined != schema['properties'][key]) {
-            $('.type').html((undefined != schema['properties'][key]['type'])? schema['properties'][key]['type']: '');
+          if ((undefined != schema['properties'][key])) {
+            var typeData = '';
+            if (undefined != schema['properties'][key]['type']) {
+              typeData = schema['properties'][key]['type'];
+              if (typeData.constructor.toString().indexOf("Array") > -1) {
+                typeData = typeData.join(', ');
+              }
+            }
+            $('.type').html(typeData);
           } else {
             $('.type').html('');
           }
@@ -146,15 +159,15 @@
     <span class="pair"><span class="key">"license"</span>: <span class="value">"MIT"</span></span>,
     <span class="pair"><span class="key">"authors"</span></span>: [
         {
-            <span class="pair"><span class="key" data-prefix="authors-">"name"</span>: <span class="value">"Nils Adermann"</span></span>,
-            <span class="pair"><span class="key" data-prefix="authors-">"email"</span>: <span class="value">"naderman@naderman.de"</span></span>,
-            <span class="pair"><span class="key" data-prefix="authors-">"homepage"</span>: <span class="value">"http://www.naderman.de"</span></span>,
+            <span class="pair"><span class="key" data-prefix="authors-">"name"</span>: <span class="value">"Xavier Lacot"</span></span>,
+            <span class="pair"><span class="key" data-prefix="authors-">"email"</span>: <span class="value">"xlacot@jolicode.com"</span></span>,
+            <span class="pair"><span class="key" data-prefix="authors-">"homepage"</span>: <span class="value">"http://www.lacot.org"</span></span>,
             <span class="pair"><span class="key" data-prefix="authors-">"role"</span>: <span class="value">"Developer"</span></span>
         },
         {
-            <span class="pair"><span class="key" data-prefix="authors-">"name"</span>: <span class="value">"Jordi Boggiano"</span></span>,
-            <span class="pair"><span class="key" data-prefix="authors-">"email"</span>: <span class="value">"j.boggiano@seld.be"</span></span>,
-            <span class="pair"><span class="key" data-prefix="authors-">"homepage"</span>: <span class="value">"http://seld.be"</span></span>,
+            <span class="pair"><span class="key" data-prefix="authors-">"name"</span>: <span class="value">"Benjamin Clay"</span></span>,
+            <span class="pair"><span class="key" data-prefix="authors-">"email"</span>: <span class="value">"bclay@jolicode.com"</span></span>,
+            <span class="pair"><span class="key" data-prefix="authors-">"homepage"</span>: <span class="value">"http://ternel.net"</span></span>,
             <span class="pair"><span class="key" data-prefix="authors-">"role"</span>: <span class="value">"Developer"</span></span>
         }
     ],
@@ -174,7 +187,7 @@
         "debug/dev-only": "1.0.*"
     }</span></span>,
     <span class="pair"><span class="key">"conflict"</span>: <span class="value">{
-        "debug/dev-only": "1.0.*"
+        "another-vendor/conflict": "1.0.*"
     }</span></span>,
     <span class="pair"><span class="key">"replace"</span>: <span class="value">{
         "debug/dev-only": "1.0.*"
@@ -186,9 +199,9 @@
         "monolog/monolog": "Allows more advanced logging of the application flow"
     }</span></span>,
     <span class="pair"><span class="key">"autoload"</span>: <span class="value">{
-        "psr-0"{
+        "psr-0": {
             "Monolog": "src/",
-            "Vendor\\Namespace": "src/",
+            "Vendor\\Namespace": ["src/", "lib/"],
             "Pear_Style": "src/",
             "": "src/"
         }
@@ -231,10 +244,17 @@
     <span class="pair"><span class="key">"scripts"</span>: <span class="value">"Symfony/Component/Yaml"</span></span>,
     <span class="pair"><span class="key">"extra"</span>: <span class="value">"stable"</span></span>,
     <span class="pair"><span class="key">"bin"</span>: <span class="value">"stable"</span></span>
-}
+}</pre>
 
-            </pre>
-
+              <h2>composer.phar</h2>
+            <pre class="composer">
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">init</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">create-project</span> <span class="value">symfony/framework-standard-edition path/</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">search</span> <span class="value">my keywords</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">install</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">update</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">validate</span></span></pre>
           </div>
           <div class="span4">
             <div class="doc">
