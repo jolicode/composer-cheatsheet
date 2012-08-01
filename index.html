@@ -64,9 +64,10 @@
           var el = this;
           $('.doc').css('top', $(document).scrollTop() + (50) + 'px')
           var prefix = (undefined != $('.key', el).attr('data-prefix'))? $('.key', el).attr('data-prefix'):'';
-          var key = prefix+$('.key', el).html().replace(/"/g, '');
+          var title = $('.key', el).html().replace(/"/g, '');
+          var key = prefix+title;
 
-          $('.title').html(key);
+          $('.title').html(title);
           if ((undefined != schema['properties'][key])) {
             var typeData = '';
             if (undefined != schema['properties'][key]['type']) {
@@ -83,12 +84,14 @@
           $('.hint').html(hints[key]);
         });
 
+        /*
         $('.composer .key').click(function(e){
           var el = this;
           $('.doc').css('top', $(document).scrollTop() + (50) + 'px')
           var key = $('.key', el).html().replace(/"/g, '');
           $('.hint').html(hints[key]);
         });
+        //*/
       });
     </script>
 
