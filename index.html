@@ -8,7 +8,7 @@
 
     var schema = '';
     var hints = {
-      "home": "Welcome to the <strong>composer.json</strong> cheatsheet! <br/><br/> This is an interactive guide for exploring various important properties of the <a href='http://jolicode.com/composer-cheatsheet'>composer.json</a> packaging format for <a href='http://php.net'>PHP</a> applications. <br/> <br/> You can access information about properties by <strong>mousing over</strong> or <strong>clicking</strong> the property name.</li></ul>",
+      "home": "This is an interactive guide for exploring various important properties of the <a href='http://jolicode.com/composer-cheatsheet'>composer.json</a> file from <a href='http://getcomposer.org'>Composer</a>. <br/> <br/> You can access information about properties by <strong>mousing over</strong>.",
       "name": "<p>The name of the package. It consists of vendor name and project name, separated by <code>/</code>.</p><br /><br />Examples:<br /><br />monolog/monolog<br />igorw/event-source<br />Required for published packages (libraries).",
       "description": "A short description of the package. Usually this is just one line long.<br /><br />Required for published packages (libraries).",
       "version": "This must follow the format of <code>X.Y.Z</code> with an optional suffix of <code>-dev</code>, <code>alphaN</code>, <code>-betaN</code> or <code>-RCN</code>.<br /><br />Examples:<br /><br /><pre><code>1.0.0<br />1.0.2<br />1.1.0<br />0.2.5<br />1.0.0-dev<br />1.0.0-beta2<br />1.0.0-RC5<br /><br /></code></pre>Optional if the package repository can infer the version from somewhere, such as the VCS tag name in the VCS repository. In that case it is also recommended to omit it.",
@@ -29,7 +29,7 @@
         "support-wiki" : "URL to the Wiki.",
         "support-irc" : "IRC channel for support, as irc://server/channel.",
         "support-source" : "URL to browse or download the sources.",
-      "require": "Lists packages required by this package. The package will not be installed unless those requirements can be met.",
+      "require": "Lists packages required by this package. The package will not be installed unless those requirements can be met.<br />It take an object which maps package names to <a href=\"http://getcomposer.org/doc/01-basic-usage.md#package-versions\">version constraints</a>. <br/><code>require</code> and <code>require-dev</code> additionally support stability flags (root-only). These allow you to further restrict or expand the stability of a package beyond the scope of the <a href=\"http://getcomposer.org/doc/#minimum-stability\">minimum-stability</a> setting. You can apply them to a constraint, or just apply them to an empty constraint if you want to allow unstable packages of a dependency's dependency for example.<br /><code>require</code> and <code>require-dev</code> additionally support explicit references (i.e. commit) for dev versions to make sure they are blocked to a given state, even when you run update. These only work if you explicitly require a dev version and append the reference with <code>#&lt;ref&gt;</code>.",
       "require-dev": "Lists packages required for developing this package, or running tests, etc. The dev requirements of the root package only will be installed if <code>install</code> or <code>update</code> is ran with <code>--dev</code>.<br />Packages listed here and their dependencies can not overrule the resolution found with the packages listed in require. This is even true if a different version of a package would be installable and solve the conflict. The reason is that <code>install --dev</code> produces the exact same state as just <code>install</code>, apart from the additional dev packages.<br />If you run into such a conflict, you can specify the conflicting package in the require section and require the right version number to resolve the conflict.",
       "conflict": "Lists packages that conflict with this version of this package. They will not be allowed to be installed together with your package.",
       "replace": "Lists packages that are replaced by this package. This allows you to fork a package, publish it under a different name with its own version numbers, while packages requiring the original package continue to work with your fork because it replaces the original package.<br /><br />This is also useful for packages that contain sub-packages, for example the main symfony/symfony package contains all the Symfony Components which are also available as individual packages. If you require the main package it will automatically fulfill any requirement of one of the individual components, since it replaces them.<br /><br />Caution is advised when using replace for the sub-package purpose explained above. You should then typically only replace using <code>self.version</code> as a version constraint, to make sure the main package only replaces the sub-packages of that exact version, and not any other version, which would be incorrect.",
@@ -38,9 +38,13 @@
       "autoload": "Autoload mapping for a PHP autoloader.<br/><br/>Currently <a href=\"https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md\">PSR-0</a> autoloading, classmap generation and files are supported. PSR-0 is the recommended way though since it offers greater flexibility (no need to regenerate the autoloader when you add classes).<br /><br />Under the <code>psr-0</code> key you define a mapping from namespaces to paths, relative to the package root. Note that this also supports the PEAR-style non-namespaced convention.",
       "target-dir": "Defines the installation target.<br /><br />In case the package root is below the namespace declaration you cannot autoload properly. target-dir solves this problem.<br /><br />An example is Symfony. There are individual packages for the components. The Yaml component is under <code>Symfony\\Component\\Yaml</code>. The package root is that Yaml directory. To make autoloading possible, we need to make sure that it is not installed into <code>vendor/symfony/yaml</code>, but instead into <code>vendor/symfony/yaml/Symfony/Component/Yaml</code>, so that the autoloader can load it from <code>vendor/symfony/yaml</code>.",
       "minimum-stability": "This defines the default behavior for filtering packages by stability. This defaults to <code>stable</code>, so if you rely on a <code>dev</code> package, you should specify it in your file to avoid surprises.<br />All versions of each package are checked for stability, and those that are less stable than the <code>minimum-stability</code> setting will be ignored when resolving your project dependencies. Specific changes to the stability requirements of a given package can be done in <code>require</code> or <code>require-dev</code>.Available options are <code>dev</code>, <code>alpha</code>, <code>beta</code>, <code>RC</code>, and <code>stable</code>.",
-      "repositories": "Custom package repositories to use.",
+      "repositories": "Custom package repositories to use.<br />By default composer just uses the packagist repository. By specifying repositories you can get packages from elsewhere.<br />The following repository types are supported:<br /><ul><li><strong>composer:</strong> A composer repository is simply a <code>packages.json</code> file served via HTTP, that contains a list of <code>composer.json</code> objects with additional <code>dist</code> and/or <code>source</code> information.</li> <li><strong>vcs:</strong> The version control system repository can fetch packages from git, svn and hg repositories.</li><li><strong>pear:</strong> With this you can import any pear repository into your composer project.</li><li><strong>package:</strong> If you depend on a project that does not have any support for composer whatsoever you can define the package inline using a <code>package</code> repository. You basically just inline the <code>composer.json</code> object.</li></ul>",
+      "repositories-composer-type": "The main repository type is the <code>composer</code> repository. It uses a single <code>packages.json</code> file that contains all of the package metadata.<br />This is also the repository type that packagist uses. To reference a <code>composer</code> repository, just supply the path before the <code>packages.json</code> file. In case of packagist, that file is located at <code>/packages.json</code>, so the URL of the repository would be <code>packagist.org</code>. For <code>example.org/packages.json</code> the repository URL would be <code>example.org</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#composer\">full documentation</a>.",
+      "repositories-vcs-type": "VCS stands for version control system. This includes versioning systems like git, svn or hg. Composer has a repository type for installing packages from these systems.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#vcs\">full documentation</a>.",
+      "repositories-pear-type": "It is possible to install packages from any PEAR channel by using the <code>pear</code> repository. Composer will prefix all package names with <code>pear-{channelName}/</code> to avoid conflicts. All packages are also aliased with prefix <code>pear-{channelAlias}/</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#pear\">full documentation</a>.",
+      "repositories-package-type": "If you want to use a project that does not support composer through any of the means above, you still can define the package yourself by using a <code>package</code> repository.<br />Basically, you define the same information that is included in the <code>composer</code> repository's <code>packages.json</code>, but only for a single package. Again, the minimum required fields are <code>name</code>, <code>version</code>, and either of <code>dist</code> or <code>source</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#package\">full documentation</a>.",
       "config": "A set of configuration options. It is only used for projects.",
-      "scripts": "Composer allows you to hook into various parts of the installation process through the use of scripts.",
+      "scripts": "Composer allows you to hook into various parts of the installation process through the use of scripts.<br />A script is a callback (defined as a static method) that will be called when the event it listens on is triggered.<br/> Let's take a look to the full list of <a href=\"http://getcomposer.org/doc/articles/scripts.md#event-types\">Event Types</a>.",
       "extra": "Arbitrary extra data for consumption by <code>scripts</code>.<br />This can be virtually anything. To access it from within a script event handler, you can do:<br /><pre><code>$extra = $event-&gt;getComposer()-&gt;getPackage()-&gt;getExtra();</code></pre>",
       "bin": "A set of files that should be treated as binaries and symlinked into the <code>bin-dir</code> (from config).",
       "phar-init": "Creates a basic composer.json file in current directory.<br/><br/>When you run the command it will interactively ask you to fill in the fields, while using some smart defaults.",
@@ -62,7 +66,12 @@
 
         $('.composer .pair').mouseover(function(e){
           var el = this;
-          $('.doc').css('top', $(document).scrollTop() + (50) + 'px')
+          var topPx = $("#header").height();
+          if (0 !== $(document).scrollTop()) {
+            topPx = $(document).scrollTop();
+          }
+
+          $('.doc').css('top', topPx + (55) + 'px')
           var prefix = (undefined != $('.key', el).attr('data-prefix'))? $('.key', el).attr('data-prefix'):'';
           var title = $('.key', el).html().replace(/"/g, '');
           var key = prefix+title;
@@ -83,19 +92,16 @@
 
           $('.hint').html(hints[key]);
         });
-
-        /*
-        $('.composer .key').click(function(e){
-          var el = this;
-          $('.doc').css('top', $(document).scrollTop() + (50) + 'px')
-          var key = $('.key', el).html().replace(/"/g, '');
-          $('.hint').html(hints[key]);
-        });
-        //*/
       });
     </script>
 
     <style>
+      #header p {
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 23px;
+      }
+
       .composer .pair {
         cursor:pointer;
       }
@@ -110,7 +116,7 @@
 
       .doc {
         position:absolute;
-        top:50px;
+        #top:50px;
         font-size:20px;
         width:400px;
         line-height:32px;
@@ -147,7 +153,23 @@
     <div class="container">
       <div class="content">
         <div class="row">
+          <div class="span12" id="header">
+            <h2>Hey there!<h2>
+            <p>Composer is the new (and incredibly nice) dependency manager for PHP. This is a one-page-only doc for this tool. it has a very nice and well-supplied documentation on the <a href="http://www.getcomposer.org">official website</a>, this page just bring you the essential on one-page. If you want to learn more about this awesome tools, juste go on the <a href="http://getcomposer.org/doc/00-intro.md">official documentation</a>.</p>
+          </div>
+        </div>
+        <div class="row" id="documentation">
           <div class="span7">
+            <h2>composer.phar</h2>
+            <pre class="composer">
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">init</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">create-project</span> <span class="value">symfony/framework-standard-edition path/</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">search</span> <span class="value">my keywords</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">install</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">update</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">validate</span></span></pre>
+
             <h2>composer.json</h2>
 
             <pre class="composer">
@@ -184,6 +206,7 @@
     },
     <span class="pair"><span class="key">"require"</span>: <span class="value">{
         "monolog/monolog": "1.0.*",
+        "joli/ternel": "@dev",
         "acme/foo": "dev-master#2eb0c0978d290a1c45346a1955188929cb4e5db7"
     }</span></span>,
     <span class="pair"><span class="key">"require-dev"</span>: <span class="value">{
@@ -211,21 +234,21 @@
     }</span></span>,
     <span class="pair"><span class="key">"target-dir"</span>: <span class="value">"Symfony/Component/Yaml"</span></span>,
     <span class="pair"><span class="key">"minimum-stability"</span>: <span class="value">"stable"</span></span>,
-    <span class="pair"><span class="key">"repositories"</span>: [
-    <span class="value">    {
-            "type": "composer",
-            "url": "http://packages.example.com"
+    <span class="pair"><span class="key">"repositories"</span></span>: [
+        {
+            <span class="pair"><span class="key" data-prefix="repositories-composer-">"type"</span>: <span class="value">"composer",
+            "url": "http://packages.example.com"</span></span>
         },
         {
-            "type": "vcs",
-            "url": "https://github.com/Seldaek/monolog"
+            <span class="pair"><span class="key" data-prefix="repositories-vcs-">"type"</span>: <span class="value">"vcs",
+            "url": "https://github.com/Seldaek/monolog"</span></span>
         },
         {
-            "type": "pear",
-            "url": "http://pear2.php.net"
+            <span class="pair"><span class="key" data-prefix="repositories-pear-">"type"</span>: <span class="value">"pear",
+            "url": "http://pear2.php.net"</span></span>
         },
         {
-            "type": "package",
+            <span class="pair"><span class="key" data-prefix="repositories-package-">"type"</span>: <span class="value">"package",
             "package": {
                 "name": "smarty/smarty",
                 "version": "3.1.7",
@@ -238,26 +261,21 @@
                     "type": "svn",
                     "reference": "tags/Smarty_3_1_7/distribution/"
                 }
-            }
+            }</span></span>
         },
     ],</span></span>
     <span class="pair"><span class="key">"config"</span>: <span class="value">{
         "bin-dir": "bin"
     }</span></span>,
-    <span class="pair"><span class="key">"scripts"</span>: <span class="value">"Symfony/Component/Yaml"</span></span>,
+    <span class="pair"><span class="key">"scripts"</span>: <span class="value">{
+        "post-update-cmd": "MyVendor\\MyClass::postUpdate",
+        "post-package-install": [
+            "MyVendor\\MyClass::postPackageInstall"
+        ]
+    }</span></span>,
     <span class="pair"><span class="key">"extra"</span>: <span class="value">"stable"</span></span>,
     <span class="pair"><span class="key">"bin"</span>: <span class="value">"stable"</span></span>
 }</pre>
-
-              <h2>composer.phar</h2>
-            <pre class="composer">
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">init</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">create-project</span> <span class="value">symfony/framework-standard-edition path/</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">search</span> <span class="value">my keywords</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">install</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">update</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">validate</span></span></pre>
           </div>
 
 
