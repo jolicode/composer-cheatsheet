@@ -67,7 +67,7 @@
         $('.composer .pair').mouseover(function(e){
           var el = this;
           var topPx = $("#header").height();
-          if (0 !== $(document).scrollTop()) {
+          if ($(document).scrollTop() >= topPx) {
             topPx = $(document).scrollTop();
           }
 
