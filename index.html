@@ -66,12 +66,12 @@
 
         $('.composer .pair').mouseover(function(e){
           var el = this;
-          var topPx = $("#header").height();
+          var topPx = $("#header").height() + 61;
           if ($(document).scrollTop() >= topPx) {
             topPx = $(document).scrollTop();
           }
 
-          $('.doc').css('top', topPx + (55) + 'px')
+          $('.doc').css('top', topPx + 'px')
           var prefix = (undefined != $('.key', el).attr('data-prefix'))? $('.key', el).attr('data-prefix'):'';
           var title = $('.key', el).html().replace(/"/g, '');
           var key = prefix+title;
