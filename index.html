@@ -55,7 +55,8 @@
       "phar-install": "Parses the composer.json file and downloads the needed dependencies.<br/><br/>The <code>install</code> command reads the <code>composer.json</code> file from the currentdirectory, resolves the dependencies, and installs them into <code>vendor</code>.<br/>The <code>install</code> command reads the <code>composer.json</code> file from the currentdirectory, resolves the dependencies, and installs them into <code>vendor</code>. If there is no <code>composer.lock</code> file, composer will create one after dependency resolution.",
       "phar-update": "Updates your dependencies to the latest version, and updates the composer.lock file.<br/><br/>In order to get the latest versions of the dependencies and to update the <code>composer.lock</code> file, you should use the <code>update</code> command.<br/>This will resolve all dependencies of the project and write the exact versions into <code>composer.lock</code>.",
       "phar-validate": "Validates a composer.json.<br/><br/>You should always run the <code>validate</code> command before you commit your <code>composer.json</code> file, and before you tag a release. It will check if your <code>composer.json</code> is valid.",
-      "phar-self-update": "Update <code>composer.phar</code> to the lastest version.<br/><br/>Running the <code>self-update</code> command could solve some problems and save you some time too."
+      "phar-self-update": "Update <code>composer.phar</code> to the lastest version.<br/><br/>Running the <code>self-update</code> command could solve some problems and save you some time too.",
+      "phar-dump-autoload": "If you need to update the autoloader because of new classes in a classmap package for example, you can use \"dump-autoload\" to do that without having to go through an install or update.<br /><br />Use <b>--optimize</b> to convert PSR-0 autoloading to classmap to get a faster autoloader. This is recommended especially for production, but can take a bit of time to run so it is currently not done by default."
     };
 
       $(document).ready(function(){
@@ -176,7 +177,8 @@
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">install</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">update</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">validate</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">self-update</span></span></pre>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">self-update</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">dump-autoload</span></span></pre>
 
             <h2>composer.json</h2>
 
