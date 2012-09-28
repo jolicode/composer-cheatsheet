@@ -45,6 +45,11 @@
       "repositories-pear-type": "It is possible to install packages from any PEAR channel by using the <code>pear</code> repository. Composer will prefix all package names with <code>pear-{channelName}/</code> to avoid conflicts. All packages are also aliased with prefix <code>pear-{channelAlias}/</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#pear\">full documentation</a>.",
       "repositories-package-type": "If you want to use a project that does not support composer through any of the means above, you still can define the package yourself by using a <code>package</code> repository.<br />Basically, you define the same information that is included in the <code>composer</code> repository's <code>packages.json</code>, but only for a single package. Again, the minimum required fields are <code>name</code>, <code>version</code>, and either of <code>dist</code> or <code>source</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#package\">full documentation</a>.",
       "config": "A set of configuration options. It is only used for projects.",
+      "config-vendor-dir": "The location where all packages are installed.",
+      "config-bin-dir": "The location where all binaries are linked.",
+      "config-process-timeout": "The timeout in seconds for process executions, defaults to 300 (5mins).",
+      "config-notify-on-install": "Composer allows repositories to define a notification URL, so that they get notified whenever a package from that repository is installed. This option allows you to disable that behaviour, defaults to true.",
+      "config-github-protocols": "A list of protocols to use for github.com clones, in priority order.",      
       "scripts": "Composer allows you to hook into various parts of the installation process through the use of scripts.<br />A script is a callback (defined as a static method) that will be called when the event it listens on is triggered.<br/> Let's take a look to the full list of <a href=\"http://getcomposer.org/doc/articles/scripts.md#event-types\">Event Types</a>.",
       "extra": "Arbitrary extra data for consumption by <code>scripts</code>.<br />This can be virtually anything. To access it from within a script event handler, you can do:<br /><pre><code>$extra = $event-&gt;getComposer()-&gt;getPackage()-&gt;getExtra();</code></pre>",
       "bin": "A set of files that should be treated as binaries and symlinked into the <code>bin-dir</code> (from config).",
@@ -52,10 +57,12 @@
       "phar-create-project": "Create new project from a package into given directory.",
       "phar-search": "Search for packages.<br /><br />The search command allows you to search through the current project's package repositories. Usually this will be just packagist. You simply pass it the terms you want to search for.",
       "phar-require": "Adds required packages to your composer.json and installs them.<br /><br/>The <code>require</code> command adds new packages to the <code>composer.json</code> file from the current directory.<br/>After adding/changing the requirements, the modified requirements will be installed or updated.",
-      "phar-install": "Parses the composer.json file and downloads the needed dependencies.<br/><br/>The <code>install</code> command reads the <code>composer.json</code> file from the currentdirectory, resolves the dependencies, and installs them into <code>vendor</code>.<br/>The <code>install</code> command reads the <code>composer.json</code> file from the currentdirectory, resolves the dependencies, and installs them into <code>vendor</code>. If there is no <code>composer.lock</code> file, composer will create one after dependency resolution.",
+      "phar-install": "Parses the composer.json file and downloads the needed dependencies.<br/><br/>The <code>install</code> command reads the <code>composer.json</code> file from the current directory, resolves the dependencies, and installs them into <code>vendor</code>.<br/>If there is no <code>composer.lock</code> file, composer will create one after dependency resolution. The <code>--no-scripts</code> option is useful to bypass the configured pre and post scripts.",
       "phar-update": "Updates your dependencies to the latest version, and updates the composer.lock file.<br/><br/>In order to get the latest versions of the dependencies and to update the <code>composer.lock</code> file, you should use the <code>update</code> command.<br/>This will resolve all dependencies of the project and write the exact versions into <code>composer.lock</code>.",
       "phar-validate": "Validates a composer.json.<br/><br/>You should always run the <code>validate</code> command before you commit your <code>composer.json</code> file, and before you tag a release. It will check if your <code>composer.json</code> is valid.",
       "phar-self-update": "Update <code>composer.phar</code> to the lastest version.<br/><br/>Running the <code>self-update</code> command could solve some problems and save you some time too.",
+      "phar-show": "List all of the available packages, you can use the show command like this <code>show -v symfony/symfony</code> to list the available versions.",
+      "phar-depends": "Tell you which other packages depend on a certain package. You can specify which link types (require, require-dev) should be included in the listing. By default both are used.",
       "phar-dump-autoload": "If you need to update the autoloader because of new classes in a classmap package for example, you can use \"dump-autoload\" to do that without having to go through an install or update.<br /><br />Use <b>--optimize</b> to convert PSR-0 autoloading to classmap to get a faster autoloader. This is recommended especially for production, but can take a bit of time to run so it is currently not done by default."
     };
 
@@ -80,7 +87,7 @@
           var key = prefix+title;
 
           $('.title').html(title);
-          if ((undefined != schema['properties'][key])) {
+          if (schema && (undefined != schema['properties'][key])) {
             var typeData = '';
             if (undefined != schema['properties'][key]['type']) {
               typeData = schema['properties'][key]['type'];
@@ -178,6 +185,8 @@
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">update</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">validate</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">self-update</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">show</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">depends</span> <span class="value">vendor-name/package-name</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">dump-autoload</span></span></pre>
 
             <h2>composer.json</h2>
@@ -274,9 +283,13 @@
             }</span></span>
         },
     ],
-    <span class="pair"><span class="key">"config"</span>: <span class="value">{
-        "bin-dir": "bin"
-    }</span></span>,
+    <span class="pair"><span class="key">"config"</span></span>: {
+        <span class="pair"><span class="key" data-prefix="config-">"bin-dir"</span>: "bin",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"vendor-dir"</span>: "vendor",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"process-timeout"</span>: 300,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"notify-on-install"</span>: true,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"github-protocols"</span>: ["git", "https", "http"]</span>
+    },
     <span class="pair"><span class="key">"scripts"</span>: <span class="value">{
         "post-update-cmd": "MyVendor\\MyClass::postUpdate",
         "post-package-install": [
@@ -287,8 +300,6 @@
     <span class="pair"><span class="key">"bin"</span>: <span class="value">"stable"</span></span>
 }</pre>
           </div>
-
-
 
           <div class="span4">
             <div class="doc">
