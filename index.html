@@ -2,11 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Composer CheatSheet - Dependency Manager for PHP</title>
+    <title>Composer.json Schema CheatSheet - Dependency Manager for PHP</title>
     <link rel="stylesheet" type="text/css" href="bootstrap.css">
     <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
     <script type="text/javascript">
-
     var schema = '';
     var hints = {
       "home": "This is an interactive guide for exploring various important properties of the <a href='http://jolicode.com/composer-cheatsheet'>composer.json</a> file from <a href='http://getcomposer.org'>Composer</a>. <br/> <br/> You can access information about properties by <strong>mousing over</strong>.",
@@ -48,9 +47,19 @@
       "config-vendor-dir": "The location where all packages are installed.",
       "config-bin-dir": "The location where all binaries are linked.",
       "config-process-timeout": "The timeout in seconds for process executions, defaults to 300 (5mins).",
-      "config-notify-on-install": "Composer allows repositories to define a notification URL, so that they get notified whenever a package from that repository is installed. This option allows you to disable that behaviour, defaults to true.",
+      "config-notify-on-install": "Composer allows repositories to define a notification URL, so that they get notified whenever a package from that repository is installed. This option allows you to disable that behaviour.",
       "config-github-protocols": "A list of protocols to use for github.com clones, in priority order.",      
-      "scripts": "Composer allows you to hook into various parts of the installation process through the use of scripts.<br />A script is a callback (defined as a static method) that will be called when the event it listens on is triggered.<br/> Let's take a look to the full list of <a href=\"http://getcomposer.org/doc/articles/scripts.md#event-types\">Event Types</a>.",
+      "config-use-include-path": "If true, the Composer autoloader will also look for classes in the PHP include path.",
+      "config-preferred-install": "Can be any of <code>source</code>, <code>dist</code> or <code>auto</code>. This option allows you to set the install method Composer will prefer to use.",
+      "config-github-oauth": "A list of domain names and oauth keys. Oauthtoken is used to access private repositories on github and to circumvent the low IP-based rate limiting of their API.",
+      "config-cache-dir": "Stores all the caches used by composer. See also <a href=\"http://getcomposer.org/doc/03-cli.md#composer-home\">COMPOSER_HOME</a>.",
+      "config-cache-files-dir": "Stores the zip archives of packages.",
+      "config-repo-dir": "Stores repository metadata for the composer type and the VCS repos of type svn, github and bitbucket.",
+      "config-vcs-dir": "Stores VCS clones for loading VCS repository metadata for the git/hg types and to speed up installs.",
+      "config-cache-files-ttl": "Composer caches all dist (zip, tar, ...) packages that it downloads. Those are purged after six months of being unused by default. This option allows you to tweak this duration (in seconds) or disable it completely by setting it to 0.",
+      "config-cache-files-maxsize": "Composer caches all dist (zip, tar, ...) packages that it downloads. When the garbage collection is periodically ran, this is the maximum size the cache will be able to use. Older (less used) files will be removed first until the cache fits.",
+      "config-discard-changes": "Can be any of <code>true</code>, <code>false</code> or <code>stash</code>. This option allows you to set the default style of handling dirty updates when in non-interactive mode. true will always discard changes in vendors, while <code>stash</code> will try to stash and reapply. Use this for CI servers or deploy scripts if you tend to have modified vendors.",
+      "scripts": "Composer allows you to hook into various parts of the installation process through the use of scripts.<br />A script is a callback (defined as a static method) or a shell command that will be called when the event it listens on is triggered.<br/> Let's take a look to the full list of <a href=\"http://getcomposer.org/doc/articles/scripts.md#event-types\">Event Types</a>.",
       "extra": "Arbitrary extra data for consumption by <code>scripts</code>.<br />This can be virtually anything. To access it from within a script event handler, you can do:<br /><pre><code>$extra = $event-&gt;getComposer()-&gt;getPackage()-&gt;getExtra();</code></pre>",
       "bin": "A set of files that should be treated as binaries and symlinked into the <code>bin-dir</code> (from config).",
       "phar-init": "Creates a basic <code>composer.json</code> file in current directory.<br/><br/>When you run the command it will interactively ask you to fill in the fields, while using some smart defaults.",
@@ -61,13 +70,14 @@
       "phar-update": "Updates your dependencies to the latest version, and updates the composer.lock file.<br/><br/>In order to get the latest versions of the dependencies and to update the <code>composer.lock</code> file, you should use the <code>update</code> command.<br/>This will resolve all dependencies of the project and write the exact versions into <code>composer.lock</code>.",
       "phar-validate": "Validates a composer.json.<br/><br/>You should always run the <code>validate</code> command before you commit your <code>composer.json</code> file, and before you tag a release. It will check if your <code>composer.json</code> is valid.",
       "phar-self-update": "Update <code>composer.phar</code> to the lastest version.<br/><br/>Running the <code>self-update</code> command could solve some problems and save you some time too.",
+      "phar-status": "If you often need to modify the code of your dependencies and they are installed from source, the status command allows you to check if you have local changes in any of them.",
+      "phar-config": "Allows you to edit some basic composer settings in either the local composer.json file or the global config.json file.",
       "phar-show": "List all of the available packages, you can use the show command like this <code>show -v symfony/symfony</code> to list the available versions.",
       "phar-depends": "Tell you which other packages depend on a certain package. You can specify which link types (require, require-dev) should be included in the listing. By default both are used.",
       "phar-dump-autoload": "If you need to update the autoloader because of new classes in a classmap package for example, you can use \"dump-autoload\" to do that without having to go through an install or update.<br /><br />Use <b>--optimize</b> to convert PSR-0 autoloading to classmap to get a faster autoloader. This is recommended especially for production, but can take a bit of time to run so it is currently not done by default."
     };
 
       $(document).ready(function(){
-
         $.get('composer-schema.json', function(data){
             schema = data;
         }, 'json');
@@ -105,7 +115,7 @@
       });
     </script>
 
-    <style>
+    <style type="text/css">
       #header p {
         font-weight: normal;
         font-size: 18px;
@@ -170,7 +180,10 @@
         <div class="row">
           <div class="span12" id="header">
             <h2>Hey there!</h2>
-            <p>Composer is the new (and incredibly nice) dependency manager for PHP. This is a one-page-only doc for this tool. It has a very nice and well-supplied documentation on the <a href="http://www.getcomposer.org">official website</a>, this page just brings you the essential. If you want to learn more about this awesome tool, just go on the <a href="http://getcomposer.org/doc/00-intro.md">official documentation</a>.</p>
+            <p>Composer is the dependency manager for PHP. This is a one-page-only doc for this tool.
+                It has a very nice and well-supplied documentation on the <a href="http://getcomposer.org">official website</a>,
+                this page just brings you the essential. If you want to learn more about this awesome tool,
+                just go on the <a href="http://getcomposer.org/doc/">official documentation</a>.</p>
           </div>
         </div>
         <div class="row" id="documentation">
@@ -184,7 +197,9 @@
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">install</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">update</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">validate</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">config</span> <span class="value">--list</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">self-update</span></span>
+<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">status</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">show</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">depends</span> <span class="value">vendor-name/package-name</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">dump-autoload</span></span></pre>
@@ -249,7 +264,9 @@
             "Vendor\\Namespace": ["src/", "lib/"],
             "Pear_Style": "src/",
             "": "src/"
-        }
+        },
+        "classmap": ["src/", "lib/", "Something.php"],
+        "files": ["src/MyLibrary/functions.php"]
     }</span></span>,
     <span class="pair"><span class="key">"target-dir"</span>: <span class="value">"Symfony/Component/Yaml"</span></span>,
     <span class="pair"><span class="key">"minimum-stability"</span>: <span class="value">"stable"</span></span>,
@@ -284,16 +301,30 @@
         },
     ],
     <span class="pair"><span class="key">"config"</span></span>: {
-        <span class="pair"><span class="key" data-prefix="config-">"bin-dir"</span>: "bin",</span>
-        <span class="pair"><span class="key" data-prefix="config-">"vendor-dir"</span>: "vendor",</span>
         <span class="pair"><span class="key" data-prefix="config-">"process-timeout"</span>: 300,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"use-include-path"</span>: false,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"preferred-install"</span>: "auto",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"github-protocols"</span>: ["git", "https", "http"],</span>
+        <span class="pair"><span class="key" data-prefix="config-">"github-oauth"</span>: {"github.com": "oauthtoken"},</span>
+        <span class="pair"><span class="key" data-prefix="config-">"vendor-dir"</span>: "vendor",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"bin-dir"</span>: "bin",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"cache-dir"</span>: "$home/cache",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"cache-files-dir"</span>: "$cache-dir/files",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"cache-repo-dir"</span>: "$cache-dir/repo",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"cache-vcs-dir"</span>: "$cache-dir/vcs",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"cache-files-ttl"</span>: 15552000,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"cache-files-maxsize"</span>: "300MiB",</span>
         <span class="pair"><span class="key" data-prefix="config-">"notify-on-install"</span>: true,</span>
-        <span class="pair"><span class="key" data-prefix="config-">"github-protocols"</span>: ["git", "https", "http"]</span>
+        <span class="pair"><span class="key" data-prefix="config-">"discard-changes"</span>: false</span>
     },
     <span class="pair"><span class="key">"scripts"</span>: <span class="value">{
         "post-update-cmd": "MyVendor\\MyClass::postUpdate",
         "post-package-install": [
             "MyVendor\\MyClass::postPackageInstall"
+        ],
+        "post-install-cmd": [
+            "MyVendor\\MyClass::warmCache",
+            "phpunit -c app/"
         ]
     }</span></span>,
     <span class="pair"><span class="key">"extra"</span>: <span class="value">"stable"</span></span>,
