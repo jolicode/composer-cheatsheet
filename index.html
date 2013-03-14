@@ -74,7 +74,7 @@
       "phar-config": "Allows you to edit some basic composer settings in either the local composer.json file or the global config.json file.",
       "phar-show": "List all of the available packages, you can use the show command like this <code>show -v symfony/symfony</code> to list the available versions.",
       "phar-depends": "Tell you which other packages depend on a certain package. You can specify which link types (require, require-dev) should be included in the listing. By default both are used.",
-      "phar-dump-autoload": "If you need to update the autoloader because of new classes in a classmap package for example, you can use \"dump-autoload\" to do that without having to go through an install or update.<br /><br />Use <b>--optimize</b> to convert PSR-0 autoloading to classmap to get a faster autoloader. This is recommended especially for production, but can take a bit of time to run so it is currently not done by default."
+      "phar-dump-autoload": "If you need to update the autoloader because of new classes in a classmap package for example, you can use \"dump-autoload\" to do that without having to go through an install or update.<br /><br />Use <b>--optimize</b> to convert PSR-0 autoloading to classmap to get a faster autoloader. <strong>This is strongly recommended for production (you can get a 20% boost)</strong>, but can take a bit of time to run so it is currently not done by default."
     };
 
       $(document).ready(function(){
@@ -202,7 +202,7 @@
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">status</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">show</span></span>
 <span class="pair">$ composer.phar <span class="key" data-prefix="phar-">depends</span> <span class="value">vendor-name/package-name</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">dump-autoload</span></span></pre>
+<span class="pair"><strong>$ composer.phar <span class="key" data-prefix="phar-">dump-autoload</span> --optimize</strong></span></pre>
 
             <h2>composer.json</h2>
 
