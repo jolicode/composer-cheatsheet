@@ -62,6 +62,8 @@
       "scripts": "Composer allows you to hook into various parts of the installation process through the use of scripts.<br />A script is a callback (defined as a static method) or a shell command that will be called when the event it listens on is triggered.<br/> Let's take a look to the full list of <a href=\"http://getcomposer.org/doc/articles/scripts.md#event-types\">Event Types</a>.",
       "extra": "Arbitrary extra data for consumption by <code>scripts</code>.<br />This can be virtually anything. To access it from within a script event handler, you can do:<br /><pre><code>$extra = $event-&gt;getComposer()-&gt;getPackage()-&gt;getExtra();</code></pre>",
       "bin": "A set of files that should be treated as binaries and symlinked into the <code>bin-dir</code> (from config).",
+      "archive": "Options for creating package archives.<br />The example will include <code>/dir/foo/bar/file</code>, <code>/foo/bar/baz</code>, <code>/file.php</code>, <code>/foo/my.test</code> but it will exclude <code>/foo/bar/any</code>, <code>/foo/baz</code>, and <code>/my.test</code>.",
+      "prefer-stable": "When this is enabled, Composer will prefer more stable packages over unstable ones when finding compatible stable packages is possible. If you require a dev version or only alphas are available for a package, those will still be selected granted that the minimum-stability allows for it.",
       "phar-init": "Creates a basic <code>composer.json</code> file in current directory.<br/><br/>When you run the command it will interactively ask you to fill in the fields, while using some smart defaults.",
       "phar-create-project": "Create new project from a package into given directory.",
       "phar-search": "Search for packages.<br /><br />The search command allows you to search through the current project's package repositories. Usually this will be just packagist. You simply pass it the terms you want to search for.",
@@ -74,7 +76,10 @@
       "phar-config": "Allows you to edit some basic composer settings in either the local composer.json file or the global config.json file.",
       "phar-show": "List all of the available packages, you can use the show command like this <code>show -v symfony/symfony</code> to list the available versions.",
       "phar-depends": "Tell you which other packages depend on a certain package. You can specify which link types (require, require-dev) should be included in the listing. By default both are used.",
-      "phar-dump-autoload": "If you need to update the autoloader because of new classes in a classmap package for example, you can use \"dump-autoload\" to do that without having to go through an install or update.<br /><br />Use <b>--optimize</b> to convert PSR-0 autoloading to classmap to get a faster autoloader. <strong>This is strongly recommended for production (you can get a 20% boost)</strong>, but can take a bit of time to run so it is currently not done by default."
+      "phar-dump-autoload": "If you need to update the autoloader because of new classes in a classmap package for example, you can use \"dump-autoload\" to do that without having to go through an install or update.<br /><br />Use <b>--optimize</b> to convert PSR-0 autoloading to classmap to get a faster autoloader. <strong>This is strongly recommended for production (you can get a 20% boost)</strong>, but can take a bit of time to run so it is currently not done by default.",
+      "phar-diagnose": "If you think you found a bug, or something is behaving strangely, you might want to run the diagnose command to perform automated checks for many common problems.",
+      "phar-help": "Display help for all the other commands: <code>composer.phar help install</code>.",
+      "phar-run-script": "Run the scripts manually, just give it the script name and optionally <code>--no-dev</code> to disable the dev mode."
     };
 
       $(document).ready(function(){
@@ -165,8 +170,6 @@
     </style>
   </head>
   <body>
-
-
     <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
@@ -179,8 +182,8 @@
       <div class="content">
         <div class="row">
           <div class="span12" id="header">
-            <h2>Hey there!</h2>
-            <p>Composer is the dependency manager for PHP. This is a one-page-only doc for this tool.
+            <h2>Composer Cheat Sheet for developers</h2>
+            <p>Composer is the dependency manager for PHP. This site is a one-page-only doc for this tool.
                 It has a very nice and well-supplied documentation on the <a href="http://getcomposer.org">official website</a>,
                 this page just brings you the essential. If you want to learn more about this awesome tool,
                 just go on the <a href="http://getcomposer.org/doc/">official documentation</a>.</p>
@@ -188,23 +191,26 @@
         </div>
         <div class="row" id="documentation">
           <div class="span7">
-            <h2>composer.phar</h2>
+            <h2>composer.phar commande line</h2>
             <pre class="composer">
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">init</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">create-project</span> <span class="value">symfony/framework-standard-edition path/</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">search</span> <span class="value">my keywords</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">install</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">update</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">validate</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">config</span> <span class="value">--list</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">self-update</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">status</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">show</span></span>
-<span class="pair">$ composer.phar <span class="key" data-prefix="phar-">depends</span> <span class="value">vendor-name/package-name</span></span>
-<span class="pair"><strong>$ composer.phar <span class="key" data-prefix="phar-">dump-autoload</span> --optimize</strong></span></pre>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">install</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">update</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">init</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">create-project</span> <span class="value">symfony/framework-standard-edition dir/</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">run-script</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">search</span> <span class="value">my keywords</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">validate</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">config</span> <span class="value">--list</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">self-update</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">status</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">diagnose</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">help</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">show</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">depends</span> <span class="value">vendor-name/package-name</span></span>
+<span class="pair"><strong>$ php composer.phar <span class="key" data-prefix="phar-">dump-autoload</span> --optimize</strong></span></pre>
 
-            <h2>composer.json</h2>
+            <h2>composer.json file</h2>
 
             <pre class="composer">
 {
@@ -317,6 +323,10 @@
         <span class="pair"><span class="key" data-prefix="config-">"notify-on-install"</span>: true,</span>
         <span class="pair"><span class="key" data-prefix="config-">"discard-changes"</span>: false</span>
     },
+    <span class="pair"><span class="key">"archive"</span>: <span class="value">{
+        "exclude": ["/foo/bar", "baz", "/*.test", "!/foo/bar/baz"]
+    },</span></span>
+    <span class="pair"><span class="key">"prefer-stable"</span>: <span class="value">true,</span></span>
     <span class="pair"><span class="key">"scripts"</span>: <span class="value">{
         "post-update-cmd": "MyVendor\\MyClass::postUpdate",
         "post-package-install": [
@@ -327,8 +337,8 @@
             "phpunit -c app/"
         ]
     }</span></span>,
-    <span class="pair"><span class="key">"extra"</span>: <span class="value">"stable"</span></span>,
-    <span class="pair"><span class="key">"bin"</span>: <span class="value">"stable"</span></span>
+    <span class="pair"><span class="key">"extra"</span>: <span class="value">{ key: value }</span></span>,
+    <span class="pair"><span class="key">"bin"</span>: <span class="value">["./bin/toto"]</span></span>
 }</pre>
           </div>
 
@@ -344,10 +354,10 @@
       </div>
 
       <footer>
-        <p>Brought to you by <a href="http://jolicode.com">JoliCode</a> - Inspired by <a href="http://package.json.nodejitsu.com/">Nodejitsu</a> - Found a typo? Something is wrong in this documentation? Just <a href="https://github.com/jolicode/composer-cheatsheet/blob/gh-pages/index.html">fork and edit it</a>!</p>
+        <p>Brought to you by <a href="http://jolicode.com">JoliCode</a> - Inspired
+            by <a href="http://package.json.nodejitsu.com/">Nodejitsu</a> - Found a typo? Something is wrong
+            in this documentation? Just <a href="https://github.com/jolicode/composer-cheatsheet/blob/gh-pages/index.html">fork and edit it</a>!</p>
       </footer>
-
-    </div> <!-- /container -->
-
+    </div>
   </body>
 </html>
