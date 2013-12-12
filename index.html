@@ -71,15 +71,18 @@
       "phar-install": "Parses the composer.json file and downloads the needed dependencies.<br/><br/>The <code>install</code> command reads the <code>composer.json</code> file from the current directory, resolves the dependencies, and installs them into <code>vendor</code>.<br/>If there is no <code>composer.lock</code> file, composer will create one after dependency resolution. The <code>--no-scripts</code> option is useful to bypass the configured pre and post scripts.",
       "phar-update": "Updates your dependencies to the latest version, and updates the composer.lock file.<br/><br/>In order to get the latest versions of the dependencies and to update the <code>composer.lock</code> file, you should use the <code>update</code> command.<br/>This will resolve all dependencies of the project and write the exact versions into <code>composer.lock</code>.",
       "phar-validate": "Validates a composer.json.<br/><br/>You should always run the <code>validate</code> command before you commit your <code>composer.json</code> file, and before you tag a release. It will check if your <code>composer.json</code> is valid.",
-      "phar-self-update": "Update <code>composer.phar</code> to the lastest version.<br/><br/>Running the <code>self-update</code> command could solve some problems and save you some time too.",
+      "phar-self-update": "Update <code>composer.phar</code> to the lastest version.<br/><br/>Running the <code>self-update</code> command could solve some problems and save you some time too.<br/><br/>You can also use the <code>selfupdate</code> alias.",
       "phar-status": "If you often need to modify the code of your dependencies and they are installed from source, the status command allows you to check if you have local changes in any of them.",
       "phar-config": "Allows you to edit some basic composer settings in either the local composer.json file or the global config.json file.",
       "phar-show": "List all of the available packages, you can use the show command like this <code>show -v symfony/symfony</code> to list the available versions.",
       "phar-depends": "Tell you which other packages depend on a certain package. You can specify which link types (require, require-dev) should be included in the listing. By default both are used.",
-      "phar-dump-autoload": "If you need to update the autoloader because of new classes in a classmap package for example, you can use \"dump-autoload\" to do that without having to go through an install or update.<br /><br />Use <b>--optimize</b> to convert PSR-0 autoloading to classmap to get a faster autoloader. <strong>This is strongly recommended for production (you can get a 20% boost)</strong>, but can take a bit of time to run so it is currently not done by default.",
+      "phar-dump-autoload": "If you need to update the autoloader because of new classes in a classmap package for example, you can use \"dump-autoload\" to do that without having to go through an install or update.<br /><br />Use <b>--optimize</b> to convert PSR-0 autoloading to classmap to get a faster autoloader. <strong>This is strongly recommended for production (you can get a 20% boost)</strong>, but can take a bit of time to run so it is currently not done by default.<br/><br/>You can also use the <code>dumpautoload</code> alias.",
       "phar-diagnose": "If you think you found a bug, or something is behaving strangely, you might want to run the diagnose command to perform automated checks for many common problems.",
       "phar-help": "Display help for all the other commands: <code>composer.phar help install</code>.",
-      "phar-run-script": "Run the scripts manually, just give it the script name and optionally <code>--no-dev</code> to disable the dev mode."
+      "phar-run-script": "Run the scripts manually, just give it the script name and optionally <code>--no-dev</code> to disable the dev mode.",
+      "phar-global": "The global command allows you to run other commands like <code>install</code>, <code>require</code> or <code>update</code> as if you were running them from the <code>COMPOSER_HOME</code> directory.<br /><br />This can be used to install CLI utilities globally and if you add <code>$COMPOSER_HOME/vendor/bin</code> to your <code>$PATH</code> environment variable.<br /><code>$ php composer.phar global require fabpot/php-cs-fixer:dev-master</code><br />Now the <code>php-cs-fixer</code> binary is available globally (assuming you adjusted your PATH).",
+      "phar-licenses": "Show information about licenses of dependencies.",
+      "phar-archive": "Create an archive of this composer package."
     };
 
       $(document).ready(function(){
@@ -207,6 +210,9 @@
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">diagnose</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">help</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">show</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">global</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">licenses</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">archive</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">depends</span> <span class="value">vendor-name/package-name</span></span>
 <span class="pair"><strong>$ php composer.phar <span class="key" data-prefix="phar-">dump-autoload</span> --optimize</strong></span></pre>
 
