@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>Composer.json Schema CheatSheet - Dependency Manager for PHP</title>
-    <link rel="stylesheet" type="text/css" href="bootstrap.css">
+    <meta name="description" content="Fancy cheatsheet for Composer, the dependency manager of PHP" />
+    <meta name="keywords" content="help, documentation, cheat sheet, composer" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.css?v2">
     <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
     <script type="text/javascript">
     var schema = '';
@@ -181,14 +183,13 @@
           line-height: 125%;
           margin: 0 2px;
         }
-
     </style>
   </head>
   <body>
     <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="#">composer.json cheatsheet</a>
+          <a class="brand" href="#">composer.json cheat sheet</a>
         </div>
       </div>
     </div>
@@ -198,11 +199,17 @@
         <div class="row">
           <div class="span12" id="header">
             <h2>Composer Cheat Sheet for developers</h2>
-            <p>Composer is the dependency manager for PHP. This site is a one-page-only doc for this tool.
-                It has a very nice and well-supplied documentation on the <a href="http://getcomposer.org">official website</a>,
-                this page just brings you the essential. If you want to learn more about this awesome tool,
-                just go on the <a href="http://getcomposer.org/doc/">official documentation</a>.</p>
+            <p>Composer is the dependency manager for PHP and you are on a one-page-only documentation for this tool.<br />
+                Official documentation is on the <a href="http://getcomposer.org">official website</a>,
+                this page just brings you the essential.</p>
           </div>
+        </div>
+        <div class="row">
+            <div class="span7">
+                <h3>One line installer</h3>
+
+                <pre><code>curl -sS https://getcomposer.org/installer | php</code></pre>
+            </div>
         </div>
         <div class="row" id="documentation">
           <div class="span7">
@@ -367,29 +374,29 @@
     },</span></span>
     <span class="pair"><span class="key">"prefer-stable"</span>: <span class="value">true,</span></span>
     <span class="pair"><span class="key">"scripts"</span>: <span class="value">{
-        "pre-install-cmd": "MyVender\\MyClass::doSomething",
+        "pre-install-cmd": "MyVendor\\MyClass::doSomething",
         "post-install-cmd": [
             "MyVendor\\MyClass::warmCache",
             "phpunit -c app/"
         ],
-        "pre-update-cmd": "MyVender\\MyClass::doSomething",
-        "post-update-cmd": "MyVender\\MyClass::doSomething",
-        "pre-status-cmd": "MyVender\\MyClass::doSomething",
-        "post-status-cmd": "MyVender\\MyClass::doSomething",
-        "pre-package-install": "MyVender\\MyClass::doSomething",
+        "pre-update-cmd": "MyVendor\\MyClass::doSomething",
+        "post-update-cmd": "MyVendor\\MyClass::doSomething",
+        "pre-status-cmd": "MyVendor\\MyClass::doSomething",
+        "post-status-cmd": "MyVendor\\MyClass::doSomething",
+        "pre-package-install": "MyVendor\\MyClass::doSomething",
         "post-package-install": [
             "MyVendor\\MyClass::postPackageInstall"
         ],
-        "pre-package-update": "MyVender\\MyClass::doSomething",
-        "post-package-update": "MyVender\\MyClass::doSomething",
-        "pre-package-uninstall": "MyVender\\MyClass::doSomething",
-        "post-package-uninstall": "MyVender\\MyClass::doSomething",
-        "pre-autoload-dump": "MyVender\\MyClass::doSomething",
-        "post-autoload-dump": "MyVender\\MyClass::doSomething",
-        "post-root-package-install": "MyVender\\MyClass::doSomething",
-        "post-create-project-cmd": "MyVender\\MyClass::doSomething",
-        "pre-archive-cmd": "MyVender\\MyClass::doSomething",
-        "post-archive-cmd": "MyVender\\MyClass::doSomething",
+        "pre-package-update": "MyVendor\\MyClass::doSomething",
+        "post-package-update": "MyVendor\\MyClass::doSomething",
+        "pre-package-uninstall": "MyVendor\\MyClass::doSomething",
+        "post-package-uninstall": "MyVendor\\MyClass::doSomething",
+        "pre-autoload-dump": "MyVendor\\MyClass::doSomething",
+        "post-autoload-dump": "MyVendor\\MyClass::doSomething",
+        "post-root-package-install": "MyVendor\\MyClass::doSomething",
+        "post-create-project-cmd": "MyVendor\\MyClass::doSomething",
+        "pre-archive-cmd": "MyVendor\\MyClass::doSomething",
+        "post-archive-cmd": "MyVendor\\MyClass::doSomething",
     }</span></span>,
     <span class="pair"><span class="key">"extra"</span>: <span class="value">{ "key": "value" }</span></span>,
     <span class="pair"><span class="key">"bin"</span>: <span class="value">["./bin/toto"]</span></span>
