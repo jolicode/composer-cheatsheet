@@ -15,7 +15,7 @@
       "type": "<p>Package types are used for custom installation logic. If you have a package that needs some special logic, you can define a custom type. This could be a <code>symfony-bundle</code>, a <code>wordpress-plugin</code> or a <code>typo3-module</code>. These types will all be specific to certain projects, and they will need to provide an installer capable of installing packages of that type.</p>",
       "keywords": "An array of keywords that the package is related to. These can be used for searching and filtering.",
       "homepage": "An URL to the website of the project.",
-      "time": "Release date of the version.<br />Must be in <code>YYYY-MM-DD</code> or <code>YYYY-MM-DD HH:MM:SS</code> format.",
+      "time": "Release date of the version.<br />Must be in <code>YYYY-MM-DD</code>, <code>YYYY-MM-DD HH:MM:SS</code> or <code>YYYY-MM-DDTHH:MM:SSZ</code> format.",
       "license": "The license of the package. This can be either a string or an array of strings.<br />The recommended notation for the most common licenses is (alphabetical):<br /><code>Apache-2.0<br />BSD-2-Clause<br />BSD-3-Clause<br />BSD-4-Clause<br />GPL-2.0<br />GPL-2.0+<br />GPL-3.0<br />GPL-3.0+<br />LGPL-2.1<br />LGPL-2.1+<br />LGPL-3.0<br />LGPL-3.0+<br />MIT</code><br />For closed-source software, you may use <code>proprietary</code> as the license identifier.",
       "authors": "The authors of the package. This is an array of objects.",
         "authors-name": "The author's name. Usually his real name.",
@@ -37,7 +37,7 @@
       "suggest": "Suggested packages that can enhance or work well with this package. These are just informational and are displayed after the package is installed, to give your users a hint that they could add more packages, even though they are not strictly required.<br />The format is like package links above, except that the values are free text and not version constraints.",
       "autoload": "Autoload mapping for a PHP autoloader.<br/><br/>Currently <a href=\"http://www.php-fig.org/psr/psr-4/\">PSR-4</a> autoloading, <a href=\"https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md\">PSR-0</a> autoloading, classmap generation and files are supported. PSR-4 is the recommended way though since it offers greater ease of use (no need to regenerate the autoloader when you add classes).<br /><br />Under the <code>psr-4</code> key you define a mapping from namespaces to paths, relative to the package root. When autoloading a class like <code>Foo\\Bar\\Baz</code> a namespace prefix <code>Foo\\</code> pointing to a directory <code>src/</code> means that the autoloader will look for a file named <code>src/Bar/Baz.php</code> and include it if present. Note that as opposed to the older PSR-0 style, the prefix (<code>Foo\\</code>) is not present in the file path.<br /><br />Under the <code>psr-0</code> key you define a mapping from namespaces to paths, relative to the package root. Note that this also supports the PEAR-style non-namespaced convention.",
       "autoload-dev": "Same as \"autoload\", but only considered in development mode.",
-      "target-dir": "Defines the installation target.<br /><br />In case the package root is below the namespace declaration you cannot autoload properly. target-dir solves this problem.<br /><br />An example is Symfony. There are individual packages for the components. The Yaml component is under <code>Symfony\\Component\\Yaml</code>. The package root is that Yaml directory. To make autoloading possible, we need to make sure that it is not installed into <code>vendor/symfony/yaml</code>, but instead into <code>vendor/symfony/yaml/Symfony/Component/Yaml</code>, so that the autoloader can load it from <code>vendor/symfony/yaml</code>.",
+      "target-dir": "DEPRECATED: Defines the installation target.<br /><br />In case the package root is below the namespace declaration you cannot autoload properly. target-dir solves this problem.<br /><br />An example is Symfony. There are individual packages for the components. The Yaml component is under <code>Symfony\\Component\\Yaml</code>. The package root is that Yaml directory. To make autoloading possible, we need to make sure that it is not installed into <code>vendor/symfony/yaml</code>, but instead into <code>vendor/symfony/yaml/Symfony/Component/Yaml</code>, so that the autoloader can load it from <code>vendor/symfony/yaml</code>.",
       "minimum-stability": "This defines the default behavior for filtering packages by stability. This defaults to <code>stable</code>, so if you rely on a <code>dev</code> package, you should specify it in your file to avoid surprises.<br />All versions of each package are checked for stability, and those that are less stable than the <code>minimum-stability</code> setting will be ignored when resolving your project dependencies. Specific changes to the stability requirements of a given package can be done in <code>require</code> or <code>require-dev</code>.Available options are <code>dev</code>, <code>alpha</code>, <code>beta</code>, <code>RC</code>, and <code>stable</code>.",
       "repositories": "Custom package repositories to use.<br />By default composer just uses the packagist repository. By specifying repositories you can get packages from elsewhere.<br />The following repository types are supported:<br /><ul><li><strong>composer:</strong> A composer repository is simply a <code>packages.json</code> file served via HTTP, that contains a list of <code>composer.json</code> objects with additional <code>dist</code> and/or <code>source</code> information.</li> <li><strong>vcs:</strong> The version control system repository can fetch packages from git, svn and hg repositories.</li><li><strong>pear:</strong> With this you can import any pear repository into your composer project.</li><li><strong>package:</strong> If you depend on a project that does not have any support for composer whatsoever you can define the package inline using a <code>package</code> repository. You basically just inline the <code>composer.json</code> object.</li></ul>",
       "repositories-composer-type": "The main repository type is the <code>composer</code> repository. It uses a single <code>packages.json</code> file that contains all of the package metadata.<br />This is also the repository type that packagist uses. To reference a <code>composer</code> repository, just supply the path before the <code>packages.json</code> file. In case of packagist, that file is located at <code>/packages.json</code>, so the URL of the repository would be <code>packagist.org</code>. For <code>example.org/packages.json</code> the repository URL would be <code>example.org</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#composer\">full documentation</a>.",
@@ -53,6 +53,8 @@
       "config-use-include-path": "If true, the Composer autoloader will also look for classes in the PHP include path.",
       "config-preferred-install": "Can be any of <code>source</code>, <code>dist</code> or <code>auto</code>. This option allows you to set the install method Composer will prefer to use.",
       "config-github-oauth": "A list of domain names and oauth keys. Oauthtoken is used to access private repositories on github and to circumvent the low IP-based rate limiting of their API.",
+      "config-http-basic": "A hash of domain name => {\"username\": \"...\", \"password\": \"...\"}.",
+      "config-store-auths": "What to do after prompting for authentication, one of: true (store), false (do not store) or \"prompt\" (ask every time), defaults to prompt.",
       "config-cache-dir": "Stores all the caches used by composer. See also <a href=\"http://getcomposer.org/doc/03-cli.md#composer-home\">COMPOSER_HOME</a>.",
       "config-cache-files-dir": "Stores the zip archives of packages.",
       "config-cache-repo-dir": "Stores repository metadata for the composer type and the VCS repos of type svn, github and bitbucket.",
@@ -60,6 +62,10 @@
       "config-cache-files-ttl": "Composer caches all dist (zip, tar, ...) packages that it downloads. Those are purged after six months of being unused by default. This option allows you to tweak this duration (in seconds) or disable it completely by setting it to 0.",
       "config-cache-files-maxsize": "Composer caches all dist (zip, tar, ...) packages that it downloads. When the garbage collection is periodically ran, this is the maximum size the cache will be able to use. Older (less used) files will be removed first until the cache fits.",
       "config-discard-changes": "Can be any of <code>true</code>, <code>false</code> or <code>stash</code>. This option allows you to set the default style of handling dirty updates when in non-interactive mode. true will always discard changes in vendors, while <code>stash</code> will try to stash and reapply. Use this for CI servers or deploy scripts if you tend to have modified vendors.",
+      "config-autoloader-suffix": "Optional string to be used as a suffix for the generated Composer autoloader. When null a random one will be generated.",
+      "config-optimize-autoloader": "Always optimize when dumping the autoloader.",
+      "config-prepend-autoloader": "If false, the composer autoloader will not be prepended to existing autoloaders, defaults to true.",
+      "config-github-domains": "A list of domains to use in github mode. This is used for GitHub Enterprise setups, defaults to [\"github.com\"].",
       "scripts": "Composer allows you to hook into various parts of the installation process through the use of scripts.<br />A script is a callback (defined as a static method) or a shell command that will be called when the event it listens on is triggered.<br/> Let's take a look to the full list of <a href=\"http://getcomposer.org/doc/articles/scripts.md#event-types\">Event Types</a>.",
       "extra": "Arbitrary extra data for consumption by <code>scripts</code>.<br />This can be virtually anything. To access it from within a script event handler, you can do:<br /><pre><code>$extra = $event-&gt;getComposer()-&gt;getPackage()-&gt;getExtra();</code></pre>",
       "bin": "A set of files that should be treated as binaries and symlinked into the <code>bin-dir</code> (from config).",
@@ -328,6 +334,12 @@
         <span class="pair"><span class="key" data-prefix="config-">"preferred-install"</span>: "auto",</span>
         <span class="pair"><span class="key" data-prefix="config-">"github-protocols"</span>: ["git", "https", "http"],</span>
         <span class="pair"><span class="key" data-prefix="config-">"github-oauth"</span>: {"github.com": "oauthtoken"},</span>
+        <span class="pair"><span class="key" data-prefix="config-">"github-domains"</span>: ["github.com"],</span>
+        <span class="pair"><span class="key" data-prefix="config-">"http-basic"</span>: {"toto.org": {"username": "foo", "password": "bar"},</span>
+        <span class="pair"><span class="key" data-prefix="config-">"store-auths"</span>: "prompt",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"autoloader-suffix"</span>: "pony",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"optimize-autoloader"</span>: true,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"prepend-autoloader"</span>: true,</span>
         <span class="pair"><span class="key" data-prefix="config-">"vendor-dir"</span>: "vendor",</span>
         <span class="pair"><span class="key" data-prefix="config-">"bin-dir"</span>: "bin",</span>
         <span class="pair"><span class="key" data-prefix="config-">"cache-dir"</span>: "$home/cache",</span>
@@ -344,14 +356,29 @@
     },</span></span>
     <span class="pair"><span class="key">"prefer-stable"</span>: <span class="value">true,</span></span>
     <span class="pair"><span class="key">"scripts"</span>: <span class="value">{
-        "post-update-cmd": "MyVendor\\MyClass::postUpdate",
-        "post-package-install": [
-            "MyVendor\\MyClass::postPackageInstall"
-        ],
+        "pre-install-cmd": "MyVender\\MyClass::doSomething",
         "post-install-cmd": [
             "MyVendor\\MyClass::warmCache",
             "phpunit -c app/"
-        ]
+        ],
+        "pre-update-cmd": "MyVender\\MyClass::doSomething",
+        "post-update-cmd": "MyVender\\MyClass::doSomething",
+        "pre-status-cmd": "MyVender\\MyClass::doSomething",
+        "post-status-cmd": "MyVender\\MyClass::doSomething",
+        "pre-package-install": "MyVender\\MyClass::doSomething",
+        "post-package-install": [
+            "MyVendor\\MyClass::postPackageInstall"
+        ],
+        "pre-package-update": "MyVender\\MyClass::doSomething",
+        "post-package-update": "MyVender\\MyClass::doSomething",
+        "pre-package-uninstall": "MyVender\\MyClass::doSomething",
+        "post-package-uninstall": "MyVender\\MyClass::doSomething",
+        "pre-autoload-dump": "MyVender\\MyClass::doSomething",
+        "post-autoload-dump": "MyVender\\MyClass::doSomething",
+        "post-root-package-install": "MyVender\\MyClass::doSomething",
+        "post-create-project-cmd": "MyVender\\MyClass::doSomething",
+        "pre-archive-cmd": "MyVender\\MyClass::doSomething",
+        "post-archive-cmd": "MyVender\\MyClass::doSomething",
     }</span></span>,
     <span class="pair"><span class="key">"extra"</span>: <span class="value">{ "key": "value" }</span></span>,
     <span class="pair"><span class="key">"bin"</span>: <span class="value">["./bin/toto"]</span></span>
