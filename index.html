@@ -31,6 +31,7 @@
         "support-wiki" : "URL to the Wiki.",
         "support-irc" : "IRC channel for support, as irc://server/channel.",
         "support-source" : "URL to browse or download the sources.",
+        "support-docs" : "URL to the documentation.",
       "require": "Lists packages required by this package. The package will not be installed unless those requirements can be met.<br />It take an object which maps package names to <a href=\"http://getcomposer.org/doc/01-basic-usage.md#package-versions\">version constraints</a>. <br/><code>require</code> and <code>require-dev</code> additionally support stability flags (root-only). These allow you to further restrict or expand the stability of a package beyond the scope of the <a href=\"http://getcomposer.org/doc/#minimum-stability\">minimum-stability</a> setting. You can apply them to a constraint, or just apply them to an empty constraint if you want to allow unstable packages of a dependency's dependency for example.<br /><code>require</code> and <code>require-dev</code> additionally support explicit references (i.e. commit) for dev versions to make sure they are blocked to a given state, even when you run update. These only work if you explicitly require a dev version and append the reference with <code>#&lt;ref&gt;</code>.",
       "require-dev": "Lists packages required for developing this package, or running tests, etc. The dev requirements of the root package only will be installed if <code>install</code> or <code>update</code> is ran with <code>--dev</code>.<br />Packages listed here and their dependencies can not overrule the resolution found with the packages listed in require. This is even true if a different version of a package would be installable and solve the conflict. The reason is that <code>install --dev</code> produces the exact same state as just <code>install</code>, apart from the additional dev packages.<br />If you run into such a conflict, you can specify the conflicting package in the require section and require the right version number to resolve the conflict.",
       "conflict": "Lists packages that conflict with this version of this package. They will not be allowed to be installed together with your package.",
@@ -273,7 +274,8 @@
         <span class="pair"><span class="key" data-prefix="support-">"forum"</span>: <span class="value">"http://www.my-forum.com/"</span></span>,
         <span class="pair"><span class="key" data-prefix="support-">"wiki"</span>: <span class="value">"http://www.my-wiki.com/"</span></span>,
         <span class="pair"><span class="key" data-prefix="support-">"irc"</span>: <span class="value">"irc://irc.freenode.org/composer"</span></span>,
-        <span class="pair"><span class="key" data-prefix="support-">"source"</span>: <span class="value">"https://github.com/jolicode/GouvCamp-mobile"</span></span>
+        <span class="pair"><span class="key" data-prefix="support-">"source"</span>: <span class="value">"https://github.com/jolicode/GouvCamp-mobile"</span></span>,
+        <span class="pair"><span class="key" data-prefix="support-">"docs"</span>: <span class="value">"https://github.com/composer/composer/tree/master/doc"</span></span>
     },
     <span class="pair"><span class="key">"require"</span>: <span class="value">{
         "monolog/monolog": "1.0.*",

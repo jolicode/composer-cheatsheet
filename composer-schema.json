@@ -398,6 +398,11 @@
                     "type": "string",
                     "description": "URL to browse or download the sources.",
                     "format": "uri"
+                },
+                "docs": {
+                    "type": "string",
+                    "description": "URL to the documentation.",
+                    "format": "uri"
                 }
             }
         }
