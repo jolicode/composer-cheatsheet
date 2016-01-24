@@ -32,7 +32,7 @@
         "support-irc" : "IRC channel for support, as irc://server/channel.",
         "support-source" : "URL to browse or download the sources.",
         "support-docs" : "URL to the documentation.",
-      "require": "Lists packages required by this package. The package will not be installed unless those requirements can be met.<br />It take an object which maps package names to <a href=\"http://getcomposer.org/doc/01-basic-usage.md#package-versions\">version constraints</a>. <br/><code>require</code> and <code>require-dev</code> additionally support stability flags (root-only). These allow you to further restrict or expand the stability of a package beyond the scope of the <a href=\"http://getcomposer.org/doc/#minimum-stability\">minimum-stability</a> setting. You can apply them to a constraint, or just apply them to an empty constraint if you want to allow unstable packages of a dependency's dependency for example.<br /><code>require</code> and <code>require-dev</code> additionally support explicit references (i.e. commit) for dev versions to make sure they are blocked to a given state, even when you run update. These only work if you explicitly require a dev version and append the reference with <code>#&lt;ref&gt;</code>.",
+      "require": "Lists packages required by this package. The package will not be installed unless those requirements can be met.<br />It take an object which maps package names to <a href=\"https://getcomposer.org/doc/01-basic-usage.md#package-versions\">version constraints</a>. <br/><code>require</code> and <code>require-dev</code> additionally support stability flags (root-only). These allow you to further restrict or expand the stability of a package beyond the scope of the <a href=\"http://getcomposer.org/doc/#minimum-stability\">minimum-stability</a> setting. You can apply them to a constraint, or just apply them to an empty constraint if you want to allow unstable packages of a dependency's dependency for example.<br /><code>require</code> and <code>require-dev</code> additionally support explicit references (i.e. commit) for dev versions to make sure they are blocked to a given state, even when you run update. These only work if you explicitly require a dev version and append the reference with <code>#&lt;ref&gt;</code>.",
       "require-dev": "Lists packages required for developing this package, or running tests, etc. The dev requirements of the root package only will be installed if <code>install</code> or <code>update</code> is ran with <code>--dev</code>.<br />Packages listed here and their dependencies can not overrule the resolution found with the packages listed in require. This is even true if a different version of a package would be installable and solve the conflict. The reason is that <code>install --dev</code> produces the exact same state as just <code>install</code>, apart from the additional dev packages.<br />If you run into such a conflict, you can specify the conflicting package in the require section and require the right version number to resolve the conflict.",
       "conflict": "Lists packages that conflict with this version of this package. They will not be allowed to be installed together with your package.",
       "replace": "Lists packages that are replaced by this package. This allows you to fork a package, publish it under a different name with its own version numbers, while packages requiring the original package continue to work with your fork because it replaces the original package.<br /><br />This is also useful for packages that contain sub-packages, for example the main symfony/symfony package contains all the Symfony Components which are also available as individual packages. If you require the main package it will automatically fulfill any requirement of one of the individual components, since it replaces them.<br /><br />Caution is advised when using replace for the sub-package purpose explained above. You should then typically only replace using <code>self.version</code> as a version constraint, to make sure the main package only replaces the sub-packages of that exact version, and not any other version, which would be incorrect.",
@@ -56,19 +56,32 @@
       "config-use-include-path": "If true, the Composer autoloader will also look for classes in the PHP include path.",
       "config-preferred-install": "Can be any of <code>source</code>, <code>dist</code> or <code>auto</code>. This option allows you to set the install method Composer will prefer to use.",
       "config-github-oauth": "A list of domain names and oauth keys. Oauthtoken is used to access private repositories on github and to circumvent the low IP-based rate limiting of their API.",
+      "config-gitlab-oauth": "A list of domain names and oauth keys. Oauthtoken is used to access private repositories on gitlab.",
+      "config-github-domains": "A list of domains to use in github mode. This is used for GitHub Enterprise setups, defaults to [\"github.com\"].",
+      "config-gitlab-domains": "A list of domains to use in gitlab mode.",
+      "config-disable-tls": "If set to true all HTTPS URLs will be tried with HTTP instead and no network level encryption is performed. Enabling this is a security risk and is NOT recommended. The better way is to enable the php_openssl extension in php.ini.",
+      "config-cafile": "Location of Certificate Authority file on local filesystem. In PHP 5.6+ you should rather set this via openssl.cafile in php.ini, although PHP 5.6+ should be able to detect your system CA file automatically.",
+      "config-capath": "If cafile is not specified or if the certificate is not found there, the directory pointed to by capath is searched for a suitable certificate. capath must be a correctly hashed certificate directory.",
       "config-http-basic": "A hash of domain name => {\"username\": \"...\", \"password\": \"...\"}.",
+      "config-platform": "Lets you fake platform packages (PHP and extensions) so that you can emulate a production env or define your target platform in the config.",
       "config-store-auths": "What to do after prompting for authentication, one of: true (store), false (do not store) or \"prompt\" (ask every time), defaults to prompt.",
       "config-cache-dir": "Stores all the caches used by composer. See also <a href=\"http://getcomposer.org/doc/03-cli.md#composer-home\">COMPOSER_HOME</a>.",
+      "config-data-dir": "Defaults to <code>C:\Users\User\AppData\Roaming\Composer</code> on Windows, $XDG_DATA_HOME/composer on unix systems that follow the XDG Base Directory Specifications, and $home on other unix systems. Right now it is only used for storing past composer.phar files to be able to rollback to older versions.",
       "config-cache-files-dir": "Stores the zip archives of packages.",
       "config-cache-repo-dir": "Stores repository metadata for the composer type and the VCS repos of type svn, github and bitbucket.",
       "config-cache-vcs-dir": "Stores VCS clones for loading VCS repository metadata for the git/hg types and to speed up installs.",
       "config-cache-files-ttl": "Composer caches all dist (zip, tar, ...) packages that it downloads. Those are purged after six months of being unused by default. This option allows you to tweak this duration (in seconds) or disable it completely by setting it to 0.",
       "config-cache-files-maxsize": "Composer caches all dist (zip, tar, ...) packages that it downloads. When the garbage collection is periodically ran, this is the maximum size the cache will be able to use. Older (less used) files will be removed first until the cache fits.",
+      "config-bin-compat": "Defaults to <code>auto</code>. Determines the compatibility of the binaries to be installed. If it is auto then Composer only installs .bat proxy files when on Windows. If set to <code>full</code> then both .bat files for Windows and scripts for Unix-based operating systems will be installed for each binary. This is mainly useful if you run Composer inside a linux VM but still want the .bat proxies available for use in the Windows host OS.",
       "config-discard-changes": "Can be any of <code>true</code>, <code>false</code> or <code>stash</code>. This option allows you to set the default style of handling dirty updates when in non-interactive mode. true will always discard changes in vendors, while <code>stash</code> will try to stash and reapply. Use this for CI servers or deploy scripts if you tend to have modified vendors.",
       "config-autoloader-suffix": "Optional string to be used as a suffix for the generated Composer autoloader. When null a random one will be generated.",
       "config-optimize-autoloader": "Always optimize when dumping the autoloader.",
       "config-prepend-autoloader": "If false, the composer autoloader will not be prepended to existing autoloaders, defaults to true.",
-      "config-github-domains": "A list of domains to use in github mode. This is used for GitHub Enterprise setups, defaults to [\"github.com\"].",
+      "config-sort-packages": "Defaults to false. If true, the require command keeps packages sorted by name in composer.json when adding a new package.",
+      "config-classmap-authoritative": "Defaults to false. If true, the Composer autoloader will only load classes from the classmap. Implies optimize-autoloader.",
+      "config-github-expose-hostname": "Defaults to true. If false, the OAuth tokens created to access the github API will have a date instead of the machine hostname.",
+      "config-archive-format": "Defaults to tar. Composer allows you to add a default archive format when the workflow needs to create a dedicated archiving format.",
+      "config-archive-dir": "Defaults to .. Composer allows you to add a default archive directory when the workflow needs to create a dedicated archiving format. Or for easier development between modules.",
       "scripts": "Composer allows you to hook into various parts of the installation process through the use of scripts.<br />A script is a callback (defined as a static method) or a shell command that will be called when the event it listens on is triggered.<br/> Let's take a look to the full list of <a href=\"http://getcomposer.org/doc/articles/scripts.md#event-types\">Event Types</a>.",
       "extra": "Arbitrary extra data for consumption by <code>scripts</code>.<br />This can be virtually anything. To access it from within a script event handler, you can do:<br /><pre><code>$extra = $event-&gt;getComposer()-&gt;getPackage()-&gt;getExtra();</code></pre>",
       "bin": "A set of files that should be treated as binaries and symlinked into the <code>bin-dir</code> (from config).",
@@ -97,7 +110,8 @@
       "phar-clear-cache": "Aliased to <code>clearcache</code>, clears composer's internal package cache.",
       "phar-list": "Lists commands",
       "phar-remove": "Removes a package from the require or require-dev: <code>remove vendor/package vendor/package2</code>.",
-      "phar-about": "Short information about Composer."
+      "phar-about": "Short information about Composer.",
+      "phar-suggest": "Lists all packages suggested by currently installed set of packages. You can optionally pass one or multiple package names in the format of <code>vendor/package</code> to limit output to suggestions made by those packages only."
     };
 
       $(document).ready(function(){
@@ -173,6 +187,11 @@
         font-size: 17px;
         font-style: italic;
       }
+      
+      .key {
+        color: #580000;
+        font-weight:bold;
+      }
 
       code {
           border: 1px solid #ccc;
@@ -184,17 +203,13 @@
           line-height: 125%;
           margin: 0 2px;
         }
+      pre {
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
-    <div class="navbar">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="#">composer.json cheat sheet</a>
-        </div>
-      </div>
-    </div>
-
+    
     <div class="container">
       <div class="content">
         <div class="row">
@@ -209,36 +224,41 @@
             <div class="span7">
                 <h3>One line installer</h3>
 
-                <pre><code>curl -sS https://getcomposer.org/installer | php</code></pre>
+                <pre>curl -sS https://getcomposer.org/installer | php</pre>
             </div>
         </div>
         <div class="row" id="documentation">
           <div class="span7">
-            <h2>composer.phar command line</h2>
+            <h2>composer.phar most needed command line</h2>
+            <pre class="composer">
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">install</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">update</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">dump-autoload</span> --optimize</span>
+</pre>
+
+            <h2>other commands</h2>
             <pre class="composer">
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">about</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">archive</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">browse</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">clear-cache</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">config</span> <span class="value">--list</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">create-project</span> <span class="value">symfony/framework-standard-edition dir/</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">create-project</span> <span class="value">symfony/standard-edition dir/</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">depends</span> <span class="value">vendor-name/package-name</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">diagnose</span></span>
-<span class="pair"><strong>$ php composer.phar <span class="key" data-prefix="phar-">dump-autoload</span> --optimize</strong></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">global</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">help</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">init</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">install</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">licenses</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">list</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">remove</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">run-script</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">search</span> <span class="value">my keywords</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">self-update</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">show</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">suggest</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">status</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">update</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">validate</span></span>
 </pre>
 
@@ -264,23 +284,26 @@
         {
             <span class="pair"><span class="key" data-prefix="authors-">"name"</span>: <span class="value">"Benjamin Clay"</span></span>,
             <span class="pair"><span class="key" data-prefix="authors-">"email"</span>: <span class="value">"bclay@jolicode.com"</span></span>,
-            <span class="pair"><span class="key" data-prefix="authors-">"homepage"</span>: <span class="value">"http://ternel.net"</span></span>,
+            <span class="pair"><span class="key" data-prefix="authors-">"homepage"</span>: <span class="value">"https://github.com/ternel"</span></span>,
             <span class="pair"><span class="key" data-prefix="authors-">"role"</span>: <span class="value">"Developer"</span></span>
         }
     ],
     <span class="pair"><span class="key">"support"</span></span>: {
         <span class="pair"><span class="key" data-prefix="support-">"email"</span>: <span class="value">"support@exemple.org"</span></span>,
-        <span class="pair"><span class="key" data-prefix="support-">"issues"</span>: <span class="value">"https://github.com/jolicode/GouvCamp-mobile/issues"</span></span>,
+        <span class="pair"><span class="key" data-prefix="support-">"issues"</span>: <span class="value">"https://github.com/jolicode/jane/issues"</span></span>,
         <span class="pair"><span class="key" data-prefix="support-">"forum"</span>: <span class="value">"http://www.my-forum.com/"</span></span>,
         <span class="pair"><span class="key" data-prefix="support-">"wiki"</span>: <span class="value">"http://www.my-wiki.com/"</span></span>,
         <span class="pair"><span class="key" data-prefix="support-">"irc"</span>: <span class="value">"irc://irc.freenode.org/composer"</span></span>,
-        <span class="pair"><span class="key" data-prefix="support-">"source"</span>: <span class="value">"https://github.com/jolicode/GouvCamp-mobile"</span></span>,
-        <span class="pair"><span class="key" data-prefix="support-">"docs"</span>: <span class="value">"https://github.com/composer/composer/tree/master/doc"</span></span>
+        <span class="pair"><span class="key" data-prefix="support-">"source"</span>: <span class="value">"https://github.com/jolicode/jane"</span></span>,
+        <span class="pair"><span class="key" data-prefix="support-">"docs"</span>: <span class="value">"https://github.com/jolicode/jane/wiki"</span></span>
     },
     <span class="pair"><span class="key">"require"</span>: <span class="value">{
         "monolog/monolog": "1.0.*",
         "joli/ternel": "@dev",
-        "acme/foo": "dev-master#2eb0c0978d290a1c45346a1955188929cb4e5db7"
+        "joli/ternel-bundle": "@stable",
+        "joli/semver": "^2.0",
+        "joli/package": "&gt;=1.0 &lt;1.1",
+        "acme/foo": "dev-master#2eb0c097"
     }</span></span>,
     <span class="pair"><span class="key">"require-dev"</span>: <span class="value">{
         "debug/dev-only": "1.0.*"
@@ -295,24 +318,24 @@
         "debug/dev-only": "1.0.*"
     }</span></span>,
     <span class="pair"><span class="key">"suggest"</span>: <span class="value">{
-        "monolog/monolog": "Allows more advanced logging of the application flow"
+        "jolicode/gif-exception-bundle": "For fun!"
     }</span></span>,
     <span class="pair"><span class="key">"autoload"</span>: <span class="value">{
-        "psr-4": {
+        <span class="key">"psr-4"</span>: {
             "Monolog\\": "src/",
             "Vendor\\Namespace\\": ""
         },
-        "psr-0": {
+        <span class="key">"psr-0"</span>: {
             "Monolog": "src/",
             "Vendor\\Namespace": ["src/", "lib/"],
             "Pear_Style": "src/",
             "": "src/"
         },
-        "classmap": ["src/", "lib/", "Something.php"],
-        "files": ["src/MyLibrary/functions.php"]
+        <span class="key">"classmap"</span>: ["src/", "lib/", "Something.php"],
+        <span class="key">"files"</span>: ["src/MyLibrary/functions.php"]
     }</span></span>,
     <span class="pair"><span class="key">"autoload-dev"</span>: <span class="value">{
-        "psr-0": {
+        <span class="key">"psr-0"</span>: {
             "MyPackage\\Tests": "test/"
         }
     }</span></span>,
@@ -321,30 +344,30 @@
     <span class="pair"><span class="key">"repositories"</span></span>: [
         {
             <span class="pair"><span class="key" data-prefix="repositories-composer-">"type"</span>: <span class="value">"composer",
-            "url": "http://packages.example.com"</span></span>
+            <span class="key">"url"</span>: "http://packages.example.com"</span></span>
         },
         {
             <span class="pair"><span class="key" data-prefix="repositories-vcs-">"type"</span>: <span class="value">"vcs",
-            "url": "https://github.com/Seldaek/monolog"</span></span>
+            <span class="key">"url"</span>: "https://github.com/Seldaek/monolog"</span></span>
         },
         {
             <span class="pair"><span class="key" data-prefix="repositories-pear-">"type"</span>: <span class="value">"pear",
-            "url": "http://pear2.php.net"</span></span>
+            <span class="key">"url"</span>: "http://pear2.php.net"</span></span>
         },
         {
             <span class="pair"><span class="key" data-prefix="repositories-package-">"type"</span>: <span class="value">"package",
-            "package": {
-                "name": "smarty/smarty",
-                "version": "3.1.7",
-                "dist": {
-                    "url": "http://www.smarty.net/files/Smarty-3.1.7.zip",
-                    "type": "zip"
-                },
-                "source": {
-                    "url": "http://smarty-php.googlecode.com/svn/",
-                    "type": "svn",
-                    "reference": "tags/Smarty_3_1_7/distribution/"
-                }
+            <span class="key">"package"</span>: {
+              "name": "smarty/smarty",
+              "version": "3.1.7",
+              "dist": {
+                "url": "http://www.smarty.net/Smarty-3.1.7.zip",
+                "type": "zip"
+              },
+              "source": {
+                "url": "http://smarty-php.googlecode.com/svn/",
+                "type": "svn",
+                "reference": "tags/Smarty_3_1_7/distribution/"
+              }
             }</span></span>
         }
     ],
@@ -352,24 +375,37 @@
         <span class="pair"><span class="key" data-prefix="config-">"process-timeout"</span>: 300,</span>
         <span class="pair"><span class="key" data-prefix="config-">"use-include-path"</span>: false,</span>
         <span class="pair"><span class="key" data-prefix="config-">"preferred-install"</span>: "auto",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"store-auths"</span>: "prompt",</span>
         <span class="pair"><span class="key" data-prefix="config-">"github-protocols"</span>: ["git", "https", "http"],</span>
         <span class="pair"><span class="key" data-prefix="config-">"github-oauth"</span>: {"github.com": "oauthtoken"},</span>
-        <span class="pair"><span class="key" data-prefix="config-">"github-domains"</span>: ["github.com"],</span>
-        <span class="pair"><span class="key" data-prefix="config-">"http-basic"</span>: {"toto.org": {"username": "foo", "password": "bar"},</span>
-        <span class="pair"><span class="key" data-prefix="config-">"store-auths"</span>: "prompt",</span>
-        <span class="pair"><span class="key" data-prefix="config-">"autoloader-suffix"</span>: "pony",</span>
-        <span class="pair"><span class="key" data-prefix="config-">"optimize-autoloader"</span>: true,</span>
-        <span class="pair"><span class="key" data-prefix="config-">"prepend-autoloader"</span>: true,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"gitlab-oauth"</span>: {"gitlab.com": "oauthtoken"},</span>
+        <span class="pair"><span class="key" data-prefix="config-">"github-domains"</span>: ["entreprise-github.me.com"],</span>
+        <span class="pair"><span class="key" data-prefix="config-">"gitlab-domains"</span>: ["entreprise-gitlab.me.com"],</span>
+        <span class="pair"><span class="key" data-prefix="config-">"github-expose-hostname"</span>: true,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"disable-tls"</span>: false,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"cafile"</span>: "/var/certif.ca",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"capath"</span>: "/var/",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"http-basic"</span>: {"me.io":{"username":"foo","password":"bar"},</span>
+        <span class="pair"><span class="key" data-prefix="config-">"platform"</span>: {"php": "5.4", "ext-something": "4.0"},</span>
         <span class="pair"><span class="key" data-prefix="config-">"vendor-dir"</span>: "vendor",</span>
         <span class="pair"><span class="key" data-prefix="config-">"bin-dir"</span>: "bin",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"data-dir"</span>: "/home/ternel/here",</span>
         <span class="pair"><span class="key" data-prefix="config-">"cache-dir"</span>: "$home/cache",</span>
         <span class="pair"><span class="key" data-prefix="config-">"cache-files-dir"</span>: "$cache-dir/files",</span>
         <span class="pair"><span class="key" data-prefix="config-">"cache-repo-dir"</span>: "$cache-dir/repo",</span>
         <span class="pair"><span class="key" data-prefix="config-">"cache-vcs-dir"</span>: "$cache-dir/vcs",</span>
         <span class="pair"><span class="key" data-prefix="config-">"cache-files-ttl"</span>: 15552000,</span>
         <span class="pair"><span class="key" data-prefix="config-">"cache-files-maxsize"</span>: "300MiB",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"bin-compat"</span>: "auto",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"prepend-autoloader"</span>: true,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"autoloader-suffix"</span>: "pony",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"optimize-autoloader"</span>: false,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"sort-packages"</span>: false,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"classmap-authoritative"</span>: false,</span>
         <span class="pair"><span class="key" data-prefix="config-">"notify-on-install"</span>: true,</span>
-        <span class="pair"><span class="key" data-prefix="config-">"discard-changes"</span>: false</span>
+        <span class="pair"><span class="key" data-prefix="config-">"discard-changes"</span>: false,</span>
+        <span class="pair"><span class="key" data-prefix="config-">"archive-format"</span>: "tar",</span>
+        <span class="pair"><span class="key" data-prefix="config-">"archive-dir"</span>: "."</span>
     },
     <span class="pair"><span class="key">"archive"</span>: <span class="value">{
         "exclude": ["/foo/bar", "baz", "/*.test", "!/foo/bar/baz"]
@@ -395,8 +431,8 @@
         "post-package-uninstall": "MyVendor\\MyClass::doSomething",
         "pre-autoload-dump": "MyVendor\\MyClass::doSomething",
         "post-autoload-dump": "MyVendor\\MyClass::doSomething",
-        "post-root-package-install": "MyVendor\\MyClass::doSomething",
-        "post-create-project-cmd": "MyVendor\\MyClass::doSomething",
+        "post-root-package-install": "MyVendor\\MyClass::doStuff",
+        "post-create-project-cmd": "MyVendor\\MyClass::doThis",
         "pre-archive-cmd": "MyVendor\\MyClass::doSomething",
         "post-archive-cmd": "MyVendor\\MyClass::doSomething",
     }</span></span>,
@@ -418,7 +454,7 @@
 
       <footer>
         <p>Brought to you by <a href="http://jolicode.com">JoliCode</a> - Inspired
-            by <a href="http://package.json.nodejitsu.com/">Nodejitsu</a> - Found a typo? Something is wrong
+            by <a href="http://browsenpm.org/package.json">Nodejitsu</a> - Found a typo? Something is wrong
             in this documentation? Just <a href="https://github.com/jolicode/composer-cheatsheet/blob/gh-pages/index.html">fork and edit it</a>!</p>
       </footer>
     </div>
