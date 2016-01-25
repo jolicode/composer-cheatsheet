@@ -43,12 +43,12 @@
       "target-dir": "DEPRECATED: Defines the installation target.<br /><br />In case the package root is below the namespace declaration you cannot autoload properly. target-dir solves this problem.<br /><br />An example is Symfony. There are individual packages for the components. The Yaml component is under <code>Symfony\\Component\\Yaml</code>. The package root is that Yaml directory. To make autoloading possible, we need to make sure that it is not installed into <code>vendor/symfony/yaml</code>, but instead into <code>vendor/symfony/yaml/Symfony/Component/Yaml</code>, so that the autoloader can load it from <code>vendor/symfony/yaml</code>.",
       "minimum-stability": "This defines the default behavior for filtering packages by stability. This defaults to <code>stable</code>, so if you rely on a <code>dev</code> package, you should specify it in your file to avoid surprises.<br />All versions of each package are checked for stability, and those that are less stable than the <code>minimum-stability</code> setting will be ignored when resolving your project dependencies. Specific changes to the stability requirements of a given package can be done in <code>require</code> or <code>require-dev</code>.Available options are <code>dev</code>, <code>alpha</code>, <code>beta</code>, <code>RC</code>, and <code>stable</code>.",
       "repositories": "Custom package repositories to use.<br />By default composer just uses the packagist repository. By specifying repositories you can get packages from elsewhere.<br />The following repository types are supported:<br /><ul><li><strong>composer:</strong> A composer repository is simply a <code>packages.json</code> file served via HTTP, that contains a list of <code>composer.json</code> objects with additional <code>dist</code> and/or <code>source</code> information.</li> <li><strong>vcs:</strong> The version control system repository can fetch packages from git, svn and hg repositories.</li><li><strong>pear:</strong> With this you can import any pear repository into your composer project.</li><li><strong>package:</strong> If you depend on a project that does not have any support for composer whatsoever you can define the package inline using a <code>package</code> repository. You basically just inline the <code>composer.json</code> object.</li></ul>",
-      "repositories-composer-type": "The main repository type is the <code>composer</code> repository. It uses a single <code>packages.json</code> file that contains all of the package metadata.<br />This is also the repository type that packagist uses. To reference a <code>composer</code> repository, just supply the path before the <code>packages.json</code> file. In case of packagist, that file is located at <code>/packages.json</code>, so the URL of the repository would be <code>packagist.org</code>. For <code>example.org/packages.json</code> the repository URL would be <code>example.org</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#composer\">full documentation</a>.",
-      "repositories-vcs-type": "VCS stands for version control system. This includes versioning systems like git, svn or hg. Composer has a repository type for installing packages from these systems.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#vcs\">full documentation</a>.",
-      "repositories-pear-type": "It is possible to install packages from any PEAR channel by using the <code>pear</code> repository. Composer will prefix all package names with <code>pear-{channelName}/</code> to avoid conflicts. All packages are also aliased with prefix <code>pear-{channelAlias}/</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#pear\">full documentation</a>.",
-      "repositories-package-type": "If you want to use a project that does not support composer through any of the means above, you still can define the package yourself by using a <code>package</code> repository.<br />Basically, you define the same information that is included in the <code>composer</code> repository's <code>packages.json</code>, but only for a single package. Again, the minimum required fields are <code>name</code>, <code>version</code>, and either of <code>dist</code> or <code>source</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#package\">full documentation</a>.",
-      "repositories-artifact-type": "There are some cases, when there is no ability to have one of the previously mentioned repository types online, even the VCS one. Typical example could be cross-organisation library exchange through built artifacts. Of course, most of the times they are private. To simplify maintenance, one can simply use a repository of type <code>artifact</code> with a folder containing ZIP archives of those private packages.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#artifact\">full documentation</a>.",
-      "repositories-path-type": "In addition to the artifact repository, you can use the path one, which allows you to depend on a relative directory. This can be especially useful when dealing with monolith repositories.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#path\">full documentation</a>.",
+      "repositories-composer": "The main repository type is the <code>composer</code> repository. It uses a single <code>packages.json</code> file that contains all of the package metadata.<br />This is also the repository type that packagist uses. To reference a <code>composer</code> repository, just supply the path before the <code>packages.json</code> file. In case of packagist, that file is located at <code>/packages.json</code>, so the URL of the repository would be <code>packagist.org</code>. For <code>example.org/packages.json</code> the repository URL would be <code>example.org</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#composer\">full documentation</a>.",
+      "repositories-vcs": "VCS stands for version control system. This includes versioning systems like git, svn or hg. Composer has a repository type for installing packages from these systems.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#vcs\">full documentation</a>.",
+      "repositories-pear": "It is possible to install packages from any PEAR channel by using the <code>pear</code> repository. Composer will prefix all package names with <code>pear-{channelName}/</code> to avoid conflicts. All packages are also aliased with prefix <code>pear-{channelAlias}/</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#pear\">full documentation</a>.",
+      "repositories-package": "If you want to use a project that does not support composer through any of the means above, you still can define the package yourself by using a <code>package</code> repository.<br />Basically, you define the same information that is included in the <code>composer</code> repository's <code>packages.json</code>, but only for a single package. Again, the minimum required fields are <code>name</code>, <code>version</code>, and either of <code>dist</code> or <code>source</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#package\">full documentation</a>.",
+      "repositories-artifact": "There are some cases, when there is no ability to have one of the previously mentioned repository types online, even the VCS one. Typical example could be cross-organisation library exchange through built artifacts. Of course, most of the times they are private. To simplify maintenance, one can simply use a repository of type <code>artifact</code> with a folder containing ZIP archives of those private packages.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#artifact\">full documentation</a>.",
+      "repositories-path": "In addition to the artifact repository, you can use the path one, which allows you to depend on a relative directory. This can be especially useful when dealing with monolith repositories.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#path\">full documentation</a>.",
       "config": "A set of configuration options. It is only used for projects.",
       "config-vendor-dir": "The location where all packages are installed.",
       "config-bin-dir": "The location where all binaries are linked.",
@@ -130,10 +130,22 @@
             topPx = $(document).scrollTop();
           }
 
-          $('.doc').css('top', topPx + 'px')
-          var prefix = (undefined != $('.key', el).attr('data-prefix'))? $('.key', el).attr('data-prefix'):'';
-          var title = $('.key', el).html().replace(/"/g, '');
-          var key = prefix+title;
+          $('.doc').css('top', topPx + 'px');
+
+          var key, title;
+
+          if (undefined != $('.key', el).attr('data-key')) {
+            key = $('.key', el).attr('data-key');
+          }
+          if (undefined != $('.key', el).attr('data-title')) {
+            title = $('.key', el).attr('data-title');
+          }
+
+          if (!key || !title) {
+            var prefix = (undefined != $('.key', el).attr('data-prefix'))? $('.key', el).attr('data-prefix'):'';
+            title = $('.key', el).html().replace(/"/g, '');
+            key = prefix+title;
+          }
 
           $('.title').html(title);
           if (schema && (undefined != schema['properties'][key])) {
@@ -345,19 +357,19 @@
     <span class="pair"><span class="key">"minimum-stability"</span>: <span class="value">"stable"</span></span>,
     <span class="pair"><span class="key">"repositories"</span></span>: [
         {
-            <span class="pair"><span class="key" data-prefix="repositories-composer-">"type"</span>: <span class="value">"composer",
+            <span class="pair"><span class="key" data-key="repositories-composer" data-title="composer repository">"type"</span>: <span class="value">"composer",
             <span class="key">"url"</span>: "http://packages.example.com"</span></span>
         },
         {
-            <span class="pair"><span class="key" data-prefix="repositories-vcs-">"type"</span>: <span class="value">"vcs",
+            <span class="pair"><span class="key" data-key="repositories-vcs" data-title="vcs repository">"type"</span>: <span class="value">"vcs",
             <span class="key">"url"</span>: "https://github.com/Seldaek/monolog"</span></span>
         },
         {
-            <span class="pair"><span class="key" data-prefix="repositories-pear-">"type"</span>: <span class="value">"pear",
+            <span class="pair"><span class="key" data-key="repositories-pear" data-title="pear repository">"type"</span>: <span class="value">"pear",
             <span class="key">"url"</span>: "http://pear2.php.net"</span></span>
         },
         {
-            <span class="pair"><span class="key" data-prefix="repositories-package-">"type"</span>: <span class="value">"package",
+            <span class="pair"><span class="key" data-key="repositories-package" data-title="package repository">"type"</span>: <span class="value">"package",
             <span class="key">"package"</span>: {
               "name": "smarty/smarty",
               "version": "3.1.7",
@@ -373,11 +385,11 @@
             }</span></span>
         },
         {
-            <span class="pair"><span class="key" data-prefix="repositories-artifact-">"type"</span>: <span class="value">"artifact",
+            <span class="pair"><span class="key" data-key="repositories-artifact" data-title="artifact repository">"type"</span>: <span class="value">"artifact",
             <span class="key">"url"</span>: "path/to/directory/with/zips/"</span></span>
         },
         {
-            <span class="pair"><span class="key" data-prefix="repositories-path-">"type"</span>: <span class="value">"path",
+            <span class="pair"><span class="key" data-key="repositories-path" data-title="path repository">"type"</span>: <span class="value">"path",
             <span class="key">"url"</span>: "../../packages/my-package"</span></span>
         }
     ],
