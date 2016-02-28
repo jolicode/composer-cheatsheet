@@ -95,6 +95,7 @@
       "phar-require": "Adds required packages to your composer.json and installs them.<br /><br/>The <code>require</code> command adds new packages to the <code>composer.json</code> file from the current directory.<br/>After adding/changing the requirements, the modified requirements will be installed or updated.",
       "phar-install": "Parses the composer.json file and downloads the needed dependencies.<br/><br/>The <code>install</code> command reads the <code>composer.json</code> file from the current directory, resolves the dependencies, and installs them into <code>vendor</code>.<br/>If there is no <code>composer.lock</code> file, composer will create one after dependency resolution. The <code>--no-scripts</code> option is useful to bypass the configured pre and post scripts.",
       "phar-update": "Updates your dependencies to the latest version, and updates the composer.lock file.<br/><br/>In order to get the latest versions of the dependencies and to update the <code>composer.lock</code> file, you should use the <code>update</code> command.<br/>This will resolve all dependencies of the project and write the exact versions into <code>composer.lock</code>.",
+      "phar-update-lock": "Sometimes, you might get this warning:<br /><pre><code style=\"word-break: initial;\">Warning: The lock file is not up to date with the latest changes in composer.json, you may be getting outdated dependencies, run update to update them.</code></pre>This could happen after you manually edited the <code>composer.json</code> (add or change the <code>description</code>, <code>authors</code>, <code>extra</code> config, etc). Even if your changes are meaningless for Composer, it detects that the <strong>md5sum</strong> of the file changed so it warns you that these modifications are not currently taken into account in the <code>composer.lock</code> file.<br/><br/>So to suppress this warning, you can just run the <code>update --lock</code> command to update the lock file <strong>without upgrading</strong> any vendors.",
       "phar-validate": "Validates a composer.json.<br/><br/>You should always run the <code>validate</code> command before you commit your <code>composer.json</code> file, and before you tag a release. It will check if your <code>composer.json</code> is valid.",
       "phar-self-update": "Update <code>composer.phar</code> to the lastest version.<br/><br/>Running the <code>self-update</code> command could solve some problems and save you some time too.<br/><br/>You can also use the <code>selfupdate</code> alias.",
       "phar-status": "If you often need to modify the code of your dependencies and they are installed from source, the status command allows you to check if you have local changes in any of them.",
@@ -143,8 +144,13 @@
 
           if (!key || !title) {
             var prefix = (undefined != $('.key', el).attr('data-prefix'))? $('.key', el).attr('data-prefix'):'';
-            title = $('.key', el).html().replace(/"/g, '');
-            key = prefix+title;
+
+            if (!title) {
+              title = $('.key', el).html().replace(/"/g, '');
+            }
+            if (!key) {
+              key = prefix+title;
+            }
           }
 
           $('.title').html(title);
@@ -248,6 +254,7 @@
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">install</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">update</span></span>
+<span class="pair">$ php composer.phar <span class="key" data-key="phar-update-lock">update --lock</span></span>
 <span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">dump-autoload</span> --optimize</span>
 </pre>
 
