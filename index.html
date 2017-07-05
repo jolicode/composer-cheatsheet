@@ -106,7 +106,7 @@
       "phar-diagnose": "If you think you found a bug, or something is behaving strangely, you might want to run the diagnose command to perform automated checks for many common problems.",
       "phar-help": "Display help for all the other commands: <code>composer.phar help install</code>.",
       "phar-run-script": "Run the scripts manually, just give it the script name and optionally <code>--no-dev</code> to disable the dev mode.",
-      "phar-global": "The global command allows you to run other commands like <code>install</code>, <code>require</code> or <code>update</code> as if you were running them from the <code>COMPOSER_HOME</code> directory.<br /><br />This can be used to install CLI utilities globally and if you add <code>$COMPOSER_HOME/vendor/bin</code> to your <code>$PATH</code> environment variable.<br /><code>$ php composer.phar global require fabpot/php-cs-fixer:dev-master</code><br />Now the <code>php-cs-fixer</code> binary is available globally (assuming you adjusted your PATH).",
+      "phar-global": "The global command allows you to run other commands like <code>install</code>, <code>require</code> or <code>update</code> as if you were running them from the <code>COMPOSER_HOME</code> directory.<br /><br />This can be used to install CLI utilities globally and if you add <code>$COMPOSER_HOME/vendor/bin</code> to your <code>$PATH</code> environment variable.<br /><code>$ composer global require fabpot/php-cs-fixer:dev-master</code><br />Now the <code>php-cs-fixer</code> binary is available globally (assuming you adjusted your PATH).",
       "phar-licenses": "Show information about licenses of dependencies.",
       "phar-archive": "Create an archive of this composer package.",
       "phar-browse": "Aliased to <code>home</code>, opens the package's repository URL or homepage in your browser.",
@@ -251,36 +251,36 @@
           <div class="span8">
             <h2>composer.phar most needed command line</h2>
             <pre class="composer">
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">install</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">update</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-key="phar-update-lock">update --lock</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">dump-autoload</span> --optimize</span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">install</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">update</span></span>
+<span class="pair">$ composer <span class="key" data-key="phar-update-lock">update --lock</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">dump-autoload</span> --optimize</span>
 </pre>
 
             <h2>other commands</h2>
             <pre class="composer">
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">about</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">archive</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">browse</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">clear-cache</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">config</span> <span class="value">--list</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">create-project</span> <span class="value">symfony/standard-edition dir/</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">depends</span> <span class="value">vendor-name/package-name</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">diagnose</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">global</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">help</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">init</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">licenses</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">list</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">remove</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">run-script</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">search</span> <span class="value">my keywords</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">self-update</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">show</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">suggest</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">status</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">validate</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">about</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">archive</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">browse</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">clear-cache</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">config</span> <span class="value">--list</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">create-project</span> <span class="value">symfony/standard-edition dir/</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">depends</span> <span class="value">vendor-name/package-name</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">diagnose</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">global</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">help</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">init</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">licenses</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">list</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">remove</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">run-script</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">search</span> <span class="value">my keywords</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">self-update</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">show</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">suggest</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">status</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">validate</span></span>
 </pre>
 
             <h2>composer.json file</h2>
