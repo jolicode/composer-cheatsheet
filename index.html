@@ -89,32 +89,36 @@
       "bin": "A set of files that should be treated as binaries and symlinked into the <code>bin-dir</code> (from config).",
       "archive": "Options for creating package archives.<br />The example will include <code>/dir/foo/bar/file</code>, <code>/foo/bar/baz</code>, <code>/file.php</code>, <code>/foo/my.test</code> but it will exclude <code>/foo/bar/any</code>, <code>/foo/baz</code>, and <code>/my.test</code>.",
       "prefer-stable": "When this is enabled, Composer will prefer more stable packages over unstable ones when finding compatible stable packages is possible. If you require a dev version or only alphas are available for a package, those will still be selected granted that the minimum-stability allows for it.",
-      "phar-init": "Creates a basic <code>composer.json</code> file in current directory.<br/><br/>When you run the command it will interactively ask you to fill in the fields, while using some smart defaults.",
-      "phar-create-project": "Create new project from a package into given directory.",
-      "phar-search": "Search for packages.<br /><br />The search command allows you to search through the current project's package repositories. Usually this will be just packagist. You simply pass it the terms you want to search for.",
-      "phar-require": "Adds required packages to your composer.json and installs them.<br /><br/>The <code>require</code> command adds new packages to the <code>composer.json</code> file from the current directory.<br/>After adding/changing the requirements, the modified requirements will be installed or updated.",
-      "phar-install": "Parses the composer.json file and downloads the needed dependencies.<br/><br/>The <code>install</code> command reads the <code>composer.json</code> file from the current directory, resolves the dependencies, and installs them into <code>vendor</code>.<br/>If there is no <code>composer.lock</code> file, composer will create one after dependency resolution. The <code>--no-scripts</code> option is useful to bypass the configured pre and post scripts.",
-      "phar-update": "Updates your dependencies to the latest version, and updates the composer.lock file.<br/><br/>In order to get the latest versions of the dependencies and to update the <code>composer.lock</code> file, you should use the <code>update</code> command.<br/>This will resolve all dependencies of the project and write the exact versions into <code>composer.lock</code>.",
-      "phar-update-lock": "Sometimes, you might get this warning:<br /><pre><code style=\"word-break: initial;\">Warning: The lock file is not up to date with the latest changes in composer.json, you may be getting outdated dependencies, run update to update them.</code></pre>This could happen after you manually edited the <code>composer.json</code> (add or change the <code>description</code>, <code>authors</code>, <code>extra</code> config, etc). Even if your changes are meaningless for Composer, it detects that the <strong>md5sum</strong> of the file changed so it warns you that these modifications are not currently taken into account in the <code>composer.lock</code> file.<br/><br/>So to suppress this warning, you can just run the <code>update --lock</code> command to update the lock file <strong>without upgrading</strong> any vendors.",
-      "phar-validate": "Validates a composer.json.<br/><br/>You should always run the <code>validate</code> command before you commit your <code>composer.json</code> file, and before you tag a release. It will check if your <code>composer.json</code> is valid.",
-      "phar-self-update": "Update <code>composer.phar</code> to the lastest version.<br/><br/>Running the <code>self-update</code> command could solve some problems and save you some time too.<br/><br/>You can also use the <code>selfupdate</code> alias.",
-      "phar-status": "If you often need to modify the code of your dependencies and they are installed from source, the status command allows you to check if you have local changes in any of them.",
-      "phar-config": "Allows you to edit some basic composer settings in either the local composer.json file or the global config.json file.",
-      "phar-show": "List all of the available packages, you can use the show command like this <code>show -v symfony/symfony</code> to list the available versions.",
-      "phar-depends": "Tell you which other packages depend on a certain package. You can specify which link types (require, require-dev) should be included in the listing. By default both are used.",
-      "phar-dump-autoload": "If you need to update the autoloader because of new classes in a classmap package for example, you can use \"dump-autoload\" to do that without having to go through an install or update.<br /><br />Use <b>--optimize</b> to convert PSR-0 autoloading to classmap to get a faster autoloader. <strong>This is strongly recommended for production (you can get a 20% boost)</strong>, but can take a bit of time to run so it is currently not done by default.<br/><br/>You can also use the <code>dumpautoload</code> alias.",
-      "phar-diagnose": "If you think you found a bug, or something is behaving strangely, you might want to run the diagnose command to perform automated checks for many common problems.",
-      "phar-help": "Display help for all the other commands: <code>composer.phar help install</code>.",
-      "phar-run-script": "Run the scripts manually, just give it the script name and optionally <code>--no-dev</code> to disable the dev mode.",
-      "phar-global": "The global command allows you to run other commands like <code>install</code>, <code>require</code> or <code>update</code> as if you were running them from the <code>COMPOSER_HOME</code> directory.<br /><br />This can be used to install CLI utilities globally and if you add <code>$COMPOSER_HOME/vendor/bin</code> to your <code>$PATH</code> environment variable.<br /><code>$ php composer.phar global require fabpot/php-cs-fixer:dev-master</code><br />Now the <code>php-cs-fixer</code> binary is available globally (assuming you adjusted your PATH).",
-      "phar-licenses": "Show information about licenses of dependencies.",
+      "phar-about": "Short information about Composer.",
       "phar-archive": "Create an archive of this composer package.",
       "phar-browse": "Aliased to <code>home</code>, opens the package's repository URL or homepage in your browser.",
       "phar-clear-cache": "Aliased to <code>clearcache</code>, clears composer's internal package cache.",
+      "phar-config": "Allows you to edit some basic composer settings in either the local composer.json file or the global config.json file.",
+      "phar-create-project": "Create new project from a package into given directory.",
+      "phar-depends": "Tell you which other packages depend on a certain package. You can specify which link types (require, require-dev) should be included in the listing. By default both are used.",
+      "phar-dump-autoload": "If you need to update the autoloader because of new classes in a classmap package for example, you can use \"dump-autoload\" to do that without having to go through an install or update.<br /><br />Use <b>--optimize</b> to convert PSR-0/4 autoloading to classmap to get a faster autoloader. <strong>This is strongly recommended for production (you can get a 20% boost)</strong>, but can take a bit of time to run so it is currently not done by default.<br/><br/>You can also use the <code>dumpautoload</code> alias.",
+      "phar-diagnose": "If you think you found a bug, or something is behaving strangely, you might want to run the diagnose command to perform automated checks for many common problems.",
+      "phar-exec": "Execute a vendored binary/script.",
+      "phar-help": "Display help for all the other commands: <code>composer help install</code>.",
+      "phar-global": "The global command allows you to run other commands like <code>install</code>, <code>require</code> or <code>update</code> as if you were running them from the <code>COMPOSER_HOME</code> directory.<br /><br />This can be used to install CLI utilities globally and if you add <code>$COMPOSER_HOME/vendor/bin</code> to your <code>$PATH</code> environment variable.<br /><code>$ composer global require friendsofphp/php-cs-fixer</code><br />Now the <code>php-cs-fixer</code> binary is available globally (assuming you adjusted your PATH).",
+      "phar-init": "Creates a basic <code>composer.json</code> file in current directory.<br/><br/>When you run the command it will interactively ask you to fill in the fields, while using some smart defaults.",
+      "phar-install": "Parses the composer.json file and downloads the needed dependencies.<br/><br/>The <code>install</code> command reads the <code>composer.json</code> file from the current directory, resolves the dependencies, and installs them into <code>vendor</code>.<br/>If there is no <code>composer.lock</code> file, composer will create one after dependency resolution. The <code>--no-scripts</code> option is useful to bypass the configured pre and post scripts.",
+      "phar-info": "Show information about packages.",
+      "phar-licenses": "Show information about licenses of dependencies.",
       "phar-list": "Lists commands",
+      "phar-outdated": "Shows a list of installed packages that have updates available (with colors!), including their current and latest versions. <br><ul><li>Green: The package is up to date!</li><li>Yellow: There's a new version, but possibly with BC break, there may be some work to install the new version.</li><li>Red: There should be no BC break (semver), you should upgrade the package.</li></ul>",
+      "phar-prohibits": "Tells you which packages are blocking a given package from being installed.",
       "phar-remove": "Removes a package from the require or require-dev: <code>remove vendor/package vendor/package2</code>.",
-      "phar-about": "Short information about Composer.",
-      "phar-suggest": "Lists all packages suggested by currently installed set of packages. You can optionally pass one or multiple package names in the format of <code>vendor/package</code> to limit output to suggestions made by those packages only."
+      "phar-require": "Adds required packages to your composer.json and installs them.<br /><br/>The <code>require</code> command adds new packages to the <code>composer.json</code> file from the current directory.<br/>After adding/changing the requirements, the modified requirements will be installed or updated.",
+      "phar-run-script": "Run the scripts manually, just give it the script name and optionally <code>--no-dev</code> to disable the dev mode.",
+      "phar-search": "Search for packages.<br /><br />The search command allows you to search through the current project's package repositories. Usually, this will be just packagist. You simply pass it the terms you want to search for.",
+      "phar-self-update": "Updates <code>composer.phar</code> to the lastest version.<br/><br/>Running the <code>self-update</code> command could solve some problems and save you some time too.<br/><br/>You can also use the <code>selfupdate</code> alias.",
+      "phar-show": "List all of the available packages, you can use the show command like this <code>show -v symfony/symfony</code> to list the available versions.",
+      "phar-status": "If you often need to modify the code of your dependencies and they are installed from source, the status command allows you to check if you have local changes in any of them.",
+      "phar-suggests": "Lists all packages suggested by currently installed set of packages. You can optionally pass one or multiple package names in the format of <code>vendor/package</code> to limit output to suggestions made by those packages only.",
+      "phar-update": "Updates your dependencies to the latest version, and updates the composer.lock file.<br/><br/>In order to get the latest versions of the dependencies and to update the <code>composer.lock</code> file, you should use the <code>update</code> command.<br/>This will resolve all dependencies of the project and write the exact versions into <code>composer.lock</code>.",
+      "phar-update-lock": "Sometimes, you might get this warning:<br /><pre><code style=\"word-break: initial;\">Warning: The lock file is not up to date with the latest changes in composer.json, you may be getting outdated dependencies, run update to update them.</code></pre>This could happen after you manually edited the <code>composer.json</code> (add or change the <code>description</code>, <code>authors</code>, <code>extra</code> config, etc). Even if your changes are meaningless for Composer, it detects that the <strong>md5sum</strong> of the file changed so it warns you that these modifications are not currently taken into account in the <code>composer.lock</code> file.<br/><br/>So to suppress this warning, you can just run the <code>update --lock</code> command to update the lock file <strong>without upgrading</strong> any vendors.",
+      "phar-validate": "Validates a composer.json.<br/><br/>You should always run the <code>validate</code> command before you commit your <code>composer.json</code> file, and before you tag a release. It will check if your <code>composer.json</code> is valid."
     };
 
       $(document).ready(function(){
@@ -236,7 +240,7 @@
           <div class="span12" id="header">
             <h2>Composer Cheat Sheet for developers</h2>
             <p>Composer is the dependency manager for PHP and you are on a one-page-only documentation for this tool.<br />
-                Official documentation is on the <a href="http://getcomposer.org">official website</a>,
+                Official documentation is on the <a href="https://getcomposer.org">official website</a>,
                 this page just brings you the essential.</p>
           </div>
         </div>
@@ -251,36 +255,40 @@
           <div class="span8">
             <h2>composer.phar most needed command line</h2>
             <pre class="composer">
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">install</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">update</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-key="phar-update-lock">update --lock</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">dump-autoload</span> --optimize</span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">require</span> <span class="value">vendor-name/package-name</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">install</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">update</span></span>
+<span class="pair">$ composer <span class="key" data-key="phar-update-lock">update --lock</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">dump-autoload</span> --optimize</span>
 </pre>
 
             <h2>other commands</h2>
             <pre class="composer">
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">about</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">archive</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">browse</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">clear-cache</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">config</span> <span class="value">--list</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">create-project</span> <span class="value">symfony/standard-edition dir/</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">depends</span> <span class="value">vendor-name/package-name</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">diagnose</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">global</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">help</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">init</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">licenses</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">list</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">remove</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">run-script</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">search</span> <span class="value">my keywords</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">self-update</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">show</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">suggest</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">status</span></span>
-<span class="pair">$ php composer.phar <span class="key" data-prefix="phar-">validate</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">about</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">archive</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">browse</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">clear-cache</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">config</span> <span class="value">--list</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">create-project</span> <span class="value">symfony/standard-edition dir/</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">depends</span> <span class="value">vendor-name/package-name</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">diagnose</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">exec</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">global</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">help</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">info</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">init</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">licenses</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">list</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">outdated</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">prohibits</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">remove</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">run-script</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">search</span> <span class="value">my keywords</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">self-update</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">show</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">status</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">suggests</span></span>
+<span class="pair">$ composer <span class="key" data-prefix="phar-">validate</span></span>
 </pre>
 
             <h2>composer.json file</h2>
@@ -292,7 +300,7 @@
     <span class="pair"><span class="key">"version"</span>: "0.3.0",</span>
     <span class="pair"><span class="key">"type"</span>: <span class="value">"library"</span></span>,
     <span class="pair"><span class="key">"keywords"</span>: <span class="value">["logging", "cool", "awesome"]</span></span>,
-    <span class="pair"><span class="key">"homepage"</span>: <span class="value">"http://jolicode.com"</span></span>,
+    <span class="pair"><span class="key">"homepage"</span>: <span class="value">"https://jolicode.com"</span></span>,
     <span class="pair"><span class="key">"time"</span>: <span class="value">"2012-12-21"</span></span>,
     <span class="pair"><span class="key">"license"</span>: <span class="value">"MIT"</span></span>,
     <span class="pair"><span class="key">"authors"</span></span>: [
@@ -482,7 +490,7 @@
       </div>
 
       <footer>
-        <p>Brought to you by <a href="http://jolicode.com">JoliCode</a> - Inspired
+        <p>Brought to you by <a href="https://jolicode.com">JoliCode</a> - Inspired
             by <a href="http://browsenpm.org/package.json">Nodejitsu</a> - Found a typo? Something is wrong
             in this documentation? Just <a href="https://github.com/jolicode/composer-cheatsheet/blob/gh-pages/index.html">fork and edit it</a>!</p>
       </footer>
