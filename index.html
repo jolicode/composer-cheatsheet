@@ -50,6 +50,7 @@
       "repositories-package": "If you want to use a project that does not support composer through any of the means above, you still can define the package yourself by using a <code>package</code> repository.<br />Basically, you define the same information that is included in the <code>composer</code> repository's <code>packages.json</code>, but only for a single package. Again, the minimum required fields are <code>name</code>, <code>version</code>, and either of <code>dist</code> or <code>source</code>.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#package\">full documentation</a>.",
       "repositories-artifact": "There are some cases, when there is no ability to have one of the previously mentioned repository types online, even the VCS one. Typical example could be cross-organisation library exchange through built artifacts. Of course, most of the times they are private. To simplify maintenance, one can simply use a repository of type <code>artifact</code> with a folder containing ZIP archives of those private packages.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#artifact\">full documentation</a>.",
       "repositories-path": "In addition to the artifact repository, you can use the path one, which allows you to depend on a relative directory. This can be especially useful when dealing with monolith repositories.<br/>See the <a href=\"http://getcomposer.org/doc/05-repositories.md#path\">full documentation</a>.",
+      "repositories-disabling-packagist": "You can disable the default Packagist.org repository by adding this to your <code>composer.json</code>.<br/>See the <a href=\"https://getcomposer.org/doc/05-repositories.md#disabling-packagist-org\">full documentation</a>.",
       "config": "A set of configuration options. It is only used for projects.",
       "config-vendor-dir": "The location where all packages are installed.",
       "config-bin-dir": "The location where all binaries are linked.",
@@ -407,6 +408,9 @@
         {
             <span class="pair"><span class="key" data-key="repositories-path" data-title="path repository">"type"</span>: <span class="value">"path",
             <span class="key">"url"</span>: "../../packages/my-package"</span></span>
+        },
+        {
+            <span class="pair"><span class="key" data-key="repositories-disabling-packagist" data-title="disabling packagist.org">"packagist.org"</span>: <span class="value">false</span></span>
         }
     ],
     <span class="pair"><span class="key">"config"</span></span>: {
