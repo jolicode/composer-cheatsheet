@@ -1,0 +1,57 @@
+#header p {
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 32px;
+}
+
+.composer .pair {
+  cursor: pointer;
+}
+
+.composer .pair:hover {
+  background-color: white;
+}
+.pair {
+  padding: 0px;
+  margin: 0px;
+}
+
+.doc {
+  position: absolute;
+  #top: 50px;
+  font-size: 18px;
+  width: 400px;
+  line-height: 32px;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.type {
+  font-size: 17px;
+  font-style: italic;
+}
+
+.key {
+  color: #580000;
+  font-weight: bold;
+}
+
+code {
+  border: 1px solid #ccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  padding: 0px 4px;
+  display: inline-block;
+  line-height: 125%;
+  margin: 0 2px;
+}
+pre {
+  font-size: 14px;
+}
+
+.container {
+  padding: 30px 0;
+}
