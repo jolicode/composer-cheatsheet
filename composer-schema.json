@@ -13,10 +13,6 @@
             "description": "Package type, either 'library' for common packages, 'composer-plugin' for plugins, 'metapackage' for empty packages, or a custom type ([a-z0-9-]+) defined by whatever project this package applies to.",
             "type": "string"
         },
-        "target-dir": {
-            "description": "DEPRECATED: Forces the package to be installed into the given subdirectory path. This is used for autoloading PSR-0 packages that do not contain their full path. Use forward slashes for cross-platform compatibility.",
-            "type": "string"
-        },
         "description": {
             "type": "string",
             "description": "Short package description."
@@ -32,6 +28,10 @@
             "type": "string",
             "description": "Homepage URL for the project.",
             "format": "uri"
+        },
+        "readme": {
+            "type": "string",
+            "description": "A relative path to the readme document."
         },
         "version": {
             "type": "string",
@@ -108,6 +108,10 @@
             "type": "object",
             "description": "Composer options.",
             "properties": {
+                "allow-plugins": {
+                    "type": "object",
+                    "description": "As of Composer 2.2.0, the 'allow-plugins' option adds a layer of security allowing you to restrict which Composer plugins are able to execute code during a Composer run. When a new plugin is first activated, which is not yet listed in the config option, Composer will print a warning. If you run Composer interactively it will prompt you to decide if you want to execute the plugin or not. Use this settings to allow only packages you trust to execute code. Set it to an object with package name patterns as keys. The values are 'true' to allow and 'false' to disallow while suppressing further warnings and prompts."
+                },
                 "process-timeout": {
                     "type": "integer",
                     "description": "The timeout in seconds for process executions, defaults to 300 (5mins)."
@@ -461,6 +465,11 @@
                     "type": "string",
                     "description": "URL to the documentation.",
                     "format": "uri"
+                },
+                "rss": {
+                    "type": "string",
+                    "description": "URL to the RSS feed.",
+                    "format": "uri"
                 }
             }
         },
@@ -474,6 +483,20 @@
         "abandoned": {
             "type": ["boolean", "string"],
             "description": "Indicates whether this package has been abandoned, it can be boolean or a package name/URL pointing to a recommended alternative. Defaults to false."
+        },
+        "funding": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of funding, or the platform through which funding can be provided, e.g. patreon, opencollective, tidelift or github."
+                },
+                "url": {
+                    "type": "string",
+                    "description": "URL to a website with details, and a way to fund the package.",
+                    "format": "uri"
+                }
+            }
         }
     }
 }
