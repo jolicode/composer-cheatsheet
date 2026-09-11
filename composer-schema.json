@@ -15,11 +15,16 @@
         },
         "target-dir": {
             "description": "DEPRECATED: Forces the package to be installed into the given subdirectory path. This is used for autoloading PSR-0 packages that do not contain their full path. Use forward slashes for cross-platform compatibility.",
+            "deprecated": "Deprecated in favor of PSR-4 autoloading; kept for legacy projects, no removal scheduled.",
             "type": "string"
         },
         "description": {
             "type": "string",
             "description": "Short package description."
+        },
+        "readme": {
+            "description": "A relative path to the readme document. Defaults to README.md. Mainly useful for packages not on GitHub, as Packagist.org will use the readme API to fetch the one detected by GitHub.",
+            "type": "string"
         },
         "keywords": {
             "type": "array",
@@ -74,6 +79,25 @@
                 }
             }
         },
+        "funding": {
+            "type": "array",
+            "description": "A list of URLs to provide funding to the package authors for maintenance and development of new functionality. Each entry consists of 'type' (the platform through which funding can be provided, e.g. patreon, opencollective, tidelift or github) and 'url'.",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "The type of funding, or the platform through which funding can be provided, e.g. patreon, opencollective, tidelift or github."
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "URL to a website with details, and a way to fund the package.",
+                        "format": "uri"
+                    }
+                }
+            }
+        },
         "require": {
             "type": "object",
             "description": "This is a hash of package name (keys) and version constraints (values) that are required to run this package.",
@@ -112,13 +136,87 @@
                     "type": "integer",
                     "description": "The timeout in seconds for process executions, defaults to 300 (5mins)."
                 },
+                "allow-plugins": {
+                    "type": ["object", "boolean"],
+                    "description": "Defaults to {}. As of Composer 2.2.0, restricts which Composer plugins are able to execute code during a Composer run. Set it to an object with package name patterns as keys; values are true to allow and false to disallow while suppressing further warnings and prompts. Can also be set to false to disallow all plugins, or true to allow all (NOT recommended).",
+                    "additionalProperties": {
+                        "type": "boolean"
+                    }
+                },
                 "use-include-path": {
                     "type": "boolean",
                     "description": "If true, the Composer autoloader will also look for classes in the PHP include path."
                 },
+                "use-parent-dir": {
+                    "type": ["string", "boolean"],
+                    "description": "When running Composer in a directory where there is no composer.json, if there is one present in a directory above, Composer will by default ask whether to use it instead. One of: true (always use parent if needed), false (never ask or use it) or \"prompt\" (ask every time), defaults to prompt."
+                },
                 "preferred-install": {
-                    "type": "string",
-                    "description": "The install method Composer will prefer to use, defaults to auto and can be any of source, dist or auto."
+                    "type": ["string", "object"],
+                    "description": "The install method Composer will prefer to use, defaults to dist (as of Composer 2.1) and can be any of source, dist or auto. Can also be an object with package name patterns as keys for more granular install preferences.",
+                    "additionalProperties": true
+                },
+                "source-fallback": {
+                    "type": "boolean",
+                    "description": "DEPRECATED: will be removed in Composer 2.11. Defaults to false. If true, Composer will fall back to a different installation source (e.g. from dist to source) when a download fails. Automatic source fallback has security implications; do not set it unless you absolutely need it.",
+                    "deprecated": "Will be removed in Composer 2.11."
+                },
+                "policy": {
+                    "type": ["object", "boolean"],
+                    "description": "Unified security and package policy configuration (security advisories, abandoned packages, malware, and custom policies). Set to false to disable all policy enforcement. Supersedes the deprecated audit.* options.",
+                    "additionalProperties": true
+                },
+                "secure-http": {
+                    "type": "boolean",
+                    "description": "Defaults to true. If set to true only HTTPS URLs are allowed to be downloaded via Composer. If you really absolutely need HTTP access to something then you can disable it, but using Let's Encrypt to get a free SSL certificate is generally a better alternative."
+                },
+                "secure-svn-domains": {
+                    "type": "array",
+                    "description": "Defaults to []. Lists domains which should be trusted/marked as using a secure Subversion/SVN transport. By default the svn:// protocol is seen as insecure and will throw. A better/safer alternative to disabling secure-http altogether.",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "bearer": {
+                    "type": "object",
+                    "description": "A hash of domain name => bearer authentication tokens, for example {\"example.org\": \"foo\"} to authenticate using an \"Authorization: Bearer foo\" header.",
+                    "additionalProperties": true
+                },
+                "bitbucket-oauth": {
+                    "type": "object",
+                    "description": "A hash of domain name => consumers, typically {\"bitbucket.org\": {\"consumer-key\": \"myKey\", \"consumer-secret\": \"mySecret\"}}.",
+                    "additionalProperties": true
+                },
+                "gitlab-token": {
+                    "type": "object",
+                    "description": "A hash of domain name => private tokens, typically {\"gitlab.com\": \"privatetoken\"}, or an object with username and token keys for deploy tokens. The token must have api or read_api scope.",
+                    "additionalProperties": true
+                },
+                "gitlab-protocol": {
+                    "enum": ["git", "http", "https"],
+                    "description": "A protocol to force when creating a repository URL for the source value of the package metadata. One of git or http (https is treated as a synonym for http). By default Composer generates a git-over-SSH URL for private repositories and HTTP(S) only for public."
+                },
+                "forgejo-domains": {
+                    "type": "array",
+                    "description": "A list of domains to use in forgejo mode. This is used for custom Forgejo setups, defaults to [\"codeberg.org\"].",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "forgejo-token": {
+                    "type": "object",
+                    "description": "A list of domain names and username/access-tokens to authenticate against Forgejo servers, typically {\"codeberg.org\": {\"username\": \"<user>\", \"token\": \"<access-token>\"}}.",
+                    "additionalProperties": true
+                },
+                "client-certificate": {
+                    "type": "object",
+                    "description": "An object of domain name => {\"local_cert\": \"...\", \"local_pk\"?: \"...\", \"passphrase\"?: \"...\"} to provide a client certificate.",
+                    "additionalProperties": true
+                },
+                "custom-headers": {
+                    "type": "object",
+                    "description": "Custom HTTP headers for specific domains.",
+                    "additionalProperties": true
                 },
                 "notify-on-install": {
                     "type": "boolean",
@@ -126,7 +224,7 @@
                 },
                 "github-protocols": {
                     "type": "array",
-                    "description": "A list of protocols to use for github.com clones, in priority order, defaults to [\"git\", \"https\", \"http\"].",
+                    "description": "A list of protocols to use when cloning from github.com, in priority order, defaults to [\"https\", \"ssh\", \"git\"].",
                     "items": {
                         "type": "string"
                     }
@@ -167,6 +265,10 @@
                     "description": "This is a hash of package name (keys) and version (values) that will be used to mock the platform packages on this machine.",
                     "additionalProperties": true
                 },
+                "platform-check": {
+                    "type": ["boolean", "string"],
+                    "description": "Defaults to \"php-only\" which only checks the PHP version. Set to true to also check the presence of required PHP extensions. If set to false, Composer will not create and require a platform_check.php file as part of the autoloader bootstrap."
+                },
                 "vendor-dir": {
                     "type": "string",
                     "description": "The location where all packages are installed, defaults to \"vendor\"."
@@ -177,11 +279,11 @@
                 },
                 "data-dir": {
                     "type": "string",
-                    "description": "The location where old phar files are stored, defaults to \"$home\" except on XDG Base Directory compliant unixes."
+                    "description": "The location where old phar files are stored, defaults to \"$COMPOSER_HOME\" except on XDG Base Directory compliant unixes. Should be writable only by the user that owns the Composer installation."
                 },
                 "cache-dir": {
                     "type": "string",
-                    "description": "The location where all caches are located, defaults to \"~/.composer/cache\" on *nix and \"%LOCALAPPDATA%\\Composer\" on windows."
+                    "description": "The location where all caches are located, defaults to \"$COMPOSER_HOME/cache\" on other unix systems, \"$XDG_CACHE_HOME/composer\" on XDG Base Directory compliant unixes, \"/Users/<user>/Library/Caches/composer\" on macOS and \"%LOCALAPPDATA%\\Composer\" on windows."
                 },
                 "cache-files-dir": {
                     "type": "string",
@@ -189,11 +291,15 @@
                 },
                 "cache-repo-dir": {
                     "type": "string",
-                    "description": "The location where repo (git/hg repo clones) are cached, defaults to \"{$cache-dir}/repo\"."
+                    "description": "The location where repo metadata (for the composer type and VCS repos of type svn, fossil, github and bitbucket) is cached, defaults to \"{$cache-dir}/repo\"."
                 },
                 "cache-vcs-dir": {
                     "type": "string",
                     "description": "The location where vcs infos (git clones, github api calls, etc. when reading vcs repos) are cached, defaults to \"{$cache-dir}/vcs\"."
+                },
+                "cache-read-only": {
+                    "type": "boolean",
+                    "description": "Defaults to false. Whether to use the Composer cache in read-only mode."
                 },
                 "cache-ttl": {
                     "type": "integer",
@@ -208,8 +314,8 @@
                     "description": "The cache max size for the files cache, defaults to \"300MiB\"."
                 },
                 "bin-compat": {
-                    "enum": ["auto", "full"],
-                    "description": "The compatibility of the binaries, defaults to \"auto\" (automatically guessed) and can be \"full\" (compatible with both Windows and Unix-based systems)."
+                    "enum": ["auto", "full", "proxy", "symlink"],
+                    "description": "The compatibility of the binaries, defaults to \"auto\" (automatically guessed), can be \"full\" (compatible with both Windows and Unix-based systems) or \"proxy\" (only create bash/Unix-style proxy files, no .bat files even on Windows/WSL)."
                 },
                 "discard-changes": {
                     "type": ["string", "boolean"],
@@ -230,6 +336,10 @@
                 "classmap-authoritative": {
                     "type": "boolean",
                     "description": "If true, the composer autoloader will not scan the filesystem for classes that are not found in the class map, defaults to false."
+                },
+                "apcu-autoloader": {
+                    "type": "boolean",
+                    "description": "Defaults to false. If true, the Composer autoloader will check for APCu and use it to cache found/not-found classes when the extension is enabled."
                 },
                 "github-domains": {
                     "type": "array",
@@ -256,6 +366,26 @@
                 "archive-dir": {
                     "type": "string",
                     "description": "The default archive path when not provided on cli, defaults to \".\"."
+                },
+                "htaccess-protect": {
+                    "type": "boolean",
+                    "description": "Defaults to true. If set to false, Composer will not create .htaccess files in the Composer home, cache, and data directories."
+                },
+                "lock": {
+                    "type": "boolean",
+                    "description": "Defaults to true. If set to false, Composer will not create a composer.lock file and will ignore it if one is present."
+                },
+                "bump-after-update": {
+                    "type": ["boolean", "string"],
+                    "description": "Defaults to false and can be any of true, false, \"dev\" or \"no-dev\". If set to true, Composer will run the bump command after running the update command."
+                },
+                "allow-missing-requirements": {
+                    "type": "boolean",
+                    "description": "Defaults to false. If set to true, Composer will allow install when the lock file is not up to date with the latest changes in composer.json."
+                },
+                "update-with-minimal-changes": {
+                    "type": "boolean",
+                    "description": "Defaults to false. If set to true, Composer will only perform absolutely necessary changes to transitive dependencies during update."
                 }
             }
         },
@@ -320,6 +450,10 @@
             "type": ["object"],
             "description": "Options for creating package archives for distribution.",
             "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Allows configuring base name for archive. By default (if not configured, and --file is not passed as command-line argument), preg_replace('#[^a-z0-9-_]#i', '-', name) is used."
+                },
                 "exclude": {
                     "type": "array",
                     "description": "A list of patterns for paths to exclude or include if prefixed with an exclamation mark."
@@ -350,6 +484,7 @@
         "include-path": {
             "type": ["array"],
             "description": "DEPRECATED: A list of directories which should get added to PHP's include path. This is only present to support legacy projects, and all new code should preferably use autoloading.",
+            "deprecated": "Deprecated: only present to support legacy projects, prefer autoloading; no removal scheduled.",
             "items": {
                 "type": "string"
             }
@@ -424,6 +559,28 @@
                 }
             }
         },
+        "scripts-descriptions": {
+            "type": "object",
+            "description": "Descriptions for the custom commands defined in scripts, shown by composer list and composer run -l instead of the default 'Runs the ... script as defined in composer.json'.",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "scripts-aliases": {
+            "type": "object",
+            "description": "Alternate names for the custom commands defined in scripts, as an array of strings per script. Available as of Composer 2.7.",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "php-ext": {
+            "type": "object",
+            "description": "Settings for a PHP extension package, read by PIE (https://github.com/php/pie) rather than by Composer itself. Can only be set by packages whose type is php-ext or php-ext-zend.",
+            "additionalProperties": true
+        },
         "support": {
             "type": "object",
             "properties": {
@@ -461,6 +618,16 @@
                     "type": "string",
                     "description": "URL to the documentation.",
                     "format": "uri"
+                },
+                "rss": {
+                    "type": "string",
+                    "description": "URL to the RSS feed.",
+                    "format": "uri"
+                },
+                "security": {
+                    "type": "string",
+                    "description": "URL to the vulnerability disclosure policy (VDP).",
+                    "format": "uri"
                 }
             }
         },
@@ -474,6 +641,13 @@
         "abandoned": {
             "type": ["boolean", "string"],
             "description": "Indicates whether this package has been abandoned, it can be boolean or a package name/URL pointing to a recommended alternative. Defaults to false."
+        },
+        "_comment": {
+            "type": ["string", "array"],
+            "description": "Top level key used as a place to store comments (it can be a string or array of strings).",
+            "items": {
+                "type": "string"
+            }
         }
     }
 }
