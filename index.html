@@ -253,12 +253,7 @@
         </div>
       </section>
 
-      <footer>
-        <p>Brought to you by <a href="https://jolicode.com">JoliCode</a> - Inspired
-            by <a href="http://browsenpm.org/package.json">Nodejitsu</a> - UI powered by
-            <a href="https://www.npmjs.com/package/json-schema-explorer">json-schema-explorer</a> - Found a typo? Something is wrong
-            in this documentation? Just <a href="https://github.com/jolicode/composer-cheatsheet/blob/gh-pages/index.html">fork and edit it</a>!</p>
-      </footer>
+      <div id="snippet-joli-footer-include"></div>
     </div>
 
     <script src="cli-hints.js?v2"></script>
@@ -592,6 +587,21 @@
               '<p class="docs-placeholder">Could not load composer-schema.json: ' + error.message + '</p>';
           });
       })();
+    </script>
+    <script>
+      // Inline the common JoliCode footer, fetched from jolicode/oss-theme.
+      fetch('joli-footer.html')
+        .then(function (response) {
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          return response.text();
+        })
+        .then(function (html) {
+          document.getElementById('snippet-joli-footer-include').innerHTML = html;
+        })
+        .catch(function (error) {
+          document.getElementById('snippet-joli-footer-include').innerHTML =
+            '<p class="docs-placeholder">Could not load joli-footer.html: ' + error.message + '</p>';
+        });
     </script>
   </body>
 </html>
