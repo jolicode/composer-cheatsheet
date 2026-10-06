@@ -14,12 +14,16 @@ If you find any typo, error, or you think there's a missing information, just se
 
 Maintenance
 -----------
-- The common JoliCode footer is vendored from [jolicode/oss-theme](https://github.com/jolicode/oss-theme).
-  To update it, re-run this command from the repository root, then re-apply the two substitutions:
+- The common JoliCode footer is vendored from [jolicode/oss-theme](https://github.com/jolicode/oss-theme)
+  and pasted **inline** in `index.html` (inside the `<div id="snippet-joli-footer">` block), so it renders
+  without any fetch — including when opening the page from the filesystem.
+  To update it, re-run this command from the repository root, re-apply the two substitutions, then replace
+  the `<div id="snippet-joli-footer">` block in `index.html` with the result:
   ```
   curl -o joli-footer.html https://raw.githubusercontent.com/jolicode/oss-theme/refs/heads/main/snippet-joli-footer.html
   sed -i 's/#GITHUB_REPO/jolicode\/composer-cheatsheet/g' joli-footer.html
   sed -i 's/<!-- #SUBTITLE -->/Found a typo? Something is wrong in this documentation? Just <a href="https:\/\/www.github.com\/jolicode\/composer-cheatsheet\/blob\/gh-pages\/index.html" class="jf-link">fork and edit it<\/a>! UI powered by <a href="https:\/\/www.npmjs.com\/package\/json-schema-explorer" class="jf-link">json-schema-explorer<\/a>./' joli-footer.html
+  rm joli-footer.html
   ```
 - Documentation for CLI commands lives in `cli-hints.js`; schema/property docs in `composer-schema.json`.
 - UI is powered by the self-hosted [json-schema-explorer](https://www.npmjs.com/package/json-schema-explorer)
