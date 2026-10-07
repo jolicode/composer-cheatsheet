@@ -3,27 +3,30 @@
     "name": "Package",
     "type": "object",
     "additionalProperties": false,
-    "required": [ "name", "description" ],
+    "required": [
+        "name",
+        "description"
+    ],
     "properties": {
         "name": {
             "type": "string",
-            "description": "Package name, including 'vendor-name/' prefix."
+            "description": "The name of the package. It consists of vendor name and project name, separated by `/`.\n\nExamples:\n\nmonolog/monolog\nigorw/event-source\nRequired for published packages (libraries).\n\nThe name must be lowercase and consist of words separated by `-`, `.` or `_`. Before Composer 2.0, a name could contain any character."
         },
         "type": {
-            "description": "Package type, either 'library' for common packages, 'composer-plugin' for plugins, 'metapackage' for empty packages, or a custom type ([a-z0-9-]+) defined by whatever project this package applies to.",
+            "description": "Package types are used for custom installation logic. If you have a package that needs some special logic, you can define a custom type. This could be a `symfony-bundle`, a `wordpress-plugin` or a `typo3-module`. These types will all be specific to certain projects, and they will need to provide an installer capable of installing packages of that type.",
             "type": "string"
         },
         "target-dir": {
-            "description": "DEPRECATED: Forces the package to be installed into the given subdirectory path. This is used for autoloading PSR-0 packages that do not contain their full path. Use forward slashes for cross-platform compatibility.",
-            "deprecated": "Deprecated in favor of PSR-4 autoloading; kept for legacy projects, no removal scheduled.",
+            "description": "Defines the installation target.\n\nIn case the package root is below the namespace declaration you cannot autoload properly. target-dir solves this problem.\n\nAn example is Symfony. There are individual packages for the components. The Yaml component is under `Symfony\\Component\\Yaml`. The package root is that Yaml directory. To make autoloading possible, we need to make sure that it is not installed into `vendor/symfony/yaml`, but instead into `vendor/symfony/yaml/Symfony/Component/Yaml`, so that the autoloader can load it from `vendor/symfony/yaml`.\n\n\"Deprecated in favor of PSR-4: only present to support legacy PSR-0 style autoloading. Not scheduled for removal, but all new code should preferably use PSR-4 without target-dir.\"",
+            "deprecated": true,
             "type": "string"
         },
         "description": {
             "type": "string",
-            "description": "Short package description."
+            "description": "A short description of the package. Usually this is just one line long.\n\nRequired for published packages (libraries)."
         },
         "readme": {
-            "description": "A relative path to the readme document. Defaults to README.md. Mainly useful for packages not on GitHub, as Packagist.org will use the readme API to fetch the one detected by GitHub.",
+            "description": "A relative path to the readme document. Defaults to `README.md`.\n\nMainly useful for packages not on GitHub, as for GitHub packages Packagist.org will use the readme API to fetch the one detected by GitHub.",
             "type": "string"
         },
         "keywords": {
@@ -31,57 +34,63 @@
             "items": {
                 "type": "string",
                 "description": "A tag/keyword that this package relates to."
-            }
+            },
+            "description": "An array of keywords that the package is related to. These can be used for searching and filtering.\n\nThe special keywords `dev`, `testing` and `static analysis` make `composer require` prompt users to add the package to `require-dev` instead of `require`. Only unicode letters or numbers, space, dot, underscore and dash are allowed."
         },
         "homepage": {
             "type": "string",
-            "description": "Homepage URL for the project.",
+            "description": "An URL to the website of the project.",
             "format": "uri"
         },
         "version": {
             "type": "string",
-            "description": "Package version, see https://getcomposer.org/doc/04-schema.md#version for more info on valid schemes."
+            "description": "This must follow the format of `X.Y.Z` or `vX.Y.Z` with an optional suffix of `-dev`, `-patch` (`-p`), `-alpha` (`-a`), `-beta` (`-b`) or `-RC`. The patch, alpha, beta and RC suffixes can also be followed by a number.\n\nExamples:\n\n```\n1.0.0\n1.0.2\n1.1.0\n0.2.5\n1.0.0-dev\n1.0.0-alpha3\n1.0.0-beta2\n1.0.0-RC5\nv2.0.4-p1\n```\nOptional if the package repository can infer the version from somewhere, such as the VCS tag name in the VCS repository. In that case it is also recommended to omit it."
         },
         "time": {
             "type": "string",
-            "description": "Package release date, in 'YYYY-MM-DD', 'YYYY-MM-DD HH:MM:SS' or 'YYYY-MM-DDTHH:MM:SSZ' format."
+            "description": "Release date of the version.\nMust be in `YYYY-MM-DD` or `YYYY-MM-DD HH:MM:SS` format in UTC timezone."
         },
         "license": {
-            "type": ["string", "array"],
-            "description": "License name. Or an array of license names."
+            "type": [
+                "string",
+                "array"
+            ],
+            "description": "The license of the package. This can be either a string or an array of strings.\nThe recommended notation for the most common licenses is (alphabetical):\n`Apache-2.0BSD-2-ClauseBSD-3-ClauseBSD-4-ClauseGPL-2.0-only / GPL-2.0-or-laterGPL-3.0-only / GPL-3.0-or-laterLGPL-2.1-only / LGPL-2.1-or-laterLGPL-3.0-only / LGPL-3.0-or-laterMIT`\nFor closed-source software, you may use `proprietary` as the license identifier."
         },
         "authors": {
             "type": "array",
-            "description": "List of authors that contributed to the package. This is typically the main maintainers, not the full list.",
+            "description": "The authors of the package. This is an array of objects.",
             "items": {
                 "type": "object",
                 "additionalProperties": false,
-                "required": [ "name"],
+                "required": [
+                    "name"
+                ],
                 "properties": {
                     "name": {
                         "type": "string",
-                        "description": "Full name of the author."
+                        "description": "The author's name. Usually his real name."
                     },
                     "email": {
                         "type": "string",
-                        "description": "Email address of the author.",
+                        "description": "The author's email address.",
                         "format": "email"
                     },
                     "homepage": {
                         "type": "string",
-                        "description": "Homepage URL for the author.",
+                        "description": "An URL to the author's website.",
                         "format": "uri"
                     },
                     "role": {
                         "type": "string",
-                        "description": "Author's role in the project."
+                        "description": "The authors' role in the project (e.g. developer or translator)"
                     }
                 }
             }
         },
         "funding": {
             "type": "array",
-            "description": "A list of URLs to provide funding to the package authors for maintenance and development of new functionality. Each entry consists of 'type' (the platform through which funding can be provided, e.g. patreon, opencollective, tidelift or github) and 'url'.",
+            "description": "A list of URLs to provide funding to the package authors for maintenance and development of new functionality.\nEach entry consists of `type` (the platform, e.g. patreon, opencollective, tidelift or github) and `url`.",
             "items": {
                 "type": "object",
                 "additionalProperties": false,
@@ -100,45 +109,48 @@
         },
         "require": {
             "type": "object",
-            "description": "This is a hash of package name (keys) and version constraints (values) that are required to run this package.",
+            "description": "Lists packages required by this package. The package will not be installed unless those requirements can be met.\nIt take an object which maps package names to [version constraints](https://getcomposer.org/doc/01-basic-usage.md#package-versions).\n`require` and `require-dev` additionally support stability flags (root-only). These allow you to further restrict or expand the stability of a package beyond the scope of the [minimum-stability](http://getcomposer.org/doc/#minimum-stability) setting. You can apply them to a constraint, or just apply them to an empty constraint if you want to allow unstable packages of a dependency's dependency for example.\n`require` and `require-dev` additionally support explicit references (i.e. commit) for dev versions to make sure they are blocked to a given state, even when you run update. These only work if you explicitly require a dev version and append the reference with `#`.\n\nExamples:\n\n```\n\"vendor/package\":  \"1.3.2\",\n// exactly 1.3.2\n\"vendor/package\":  \">=1.3.2\",\n// anything above or equal to 1.3.2\n\"vendor/package\":  \"=1.3.0 =1.3.2 =1.3.0 =1.3.2 =0.3.2 , =, \\<= specify upper / lower bounds\n* wildcard\n~ allows last digit specified to go up\n^ doesn't allow breaking changes\n```\n\n\"The `dev-master#` explicit references are discouraged and not actively supported: the package metadata is read from the branch, not the pinned commit. Only use as a temporary fix during development; prefer tagged releases.\"",
             "additionalProperties": true
         },
         "replace": {
             "type": "object",
-            "description": "This is a hash of package name (keys) and version constraints (values) that can be replaced by this package.",
+            "description": "Lists packages that are replaced by this package. This allows you to fork a package, publish it under a different name with its own version numbers, while packages requiring the original package continue to work with your fork because it replaces the original package.\n\nThis is also useful for packages that contain sub-packages, for example the main symfony/symfony package contains all the Symfony Components which are also available as individual packages. If you require the main package it will automatically fulfill any requirement of one of the individual components, since it replaces them.\n\nCaution is advised when using replace for the sub-package purpose explained above. You should then typically only replace using `self.version` as a version constraint, to make sure the main package only replaces the sub-packages of that exact version, and not any other version, which would be incorrect.",
             "additionalProperties": true
         },
         "conflict": {
             "type": "object",
-            "description": "This is a hash of package name (keys) and version constraints (values) that conflict with this package.",
+            "description": "Lists packages that conflict with this version of this package. They will not be allowed to be installed together with your package.\n\nNote: when specifying ranges like `=1.1`, this conflicts with all versions that are less than 1.0 *and* equal or newer than 1.1 at the same time — you probably want `=1.1` instead.",
             "additionalProperties": true
         },
         "provide": {
             "type": "object",
-            "description": "This is a hash of package name (keys) and version constraints (values) that this package provides in addition to this package's name.",
+            "description": "List of other packages that are provided by this package. This is mostly useful for implementations of common interfaces. A package could depend on some virtual package e.g. `psr/log-implementation`, any library that implements this interface would simply list it in `provide`.\n\nUsing `provide` with the name of an actual package rather than a virtual one implies that the code of that package is also shipped, in which case `replace` is generally a better choice.",
             "additionalProperties": true
         },
         "require-dev": {
             "type": "object",
-            "description": "This is a hash of package name (keys) and version constraints (values) that this package requires for developing it (testing tools and such).",
+            "description": "Lists packages required for developing this package, or running tests, etc. (root-only).\n\nThe dev requirements of the root package are installed by default. Both `install` and `update` support the `--no-dev` option that prevents dev dependencies from being installed.\nPackages listed here and their dependencies can not overrule the resolution found with the packages listed in require. If you run into such a conflict, you can specify the conflicting package in the require section and require the right version number to resolve the conflict.\n\nExamples:\n\n```\n\"vendor/package\":  \"1.3.2\",\n// exactly 1.3.2\n\"vendor/package\":  \">=1.3.2\",\n// anything above or equal to 1.3.2\n\"vendor/package\":  \"=1.3.0 =1.3.2 =1.3.0 =1.3.2 =0.3.2 , =, \\<= specify upper / lower bounds\n* wildcard\n~ allows last digit specified to go up\n^ doesn't allow breaking changes\n```",
             "additionalProperties": true
         },
         "suggest": {
             "type": "object",
-            "description": "This is a hash of package name (keys) and descriptions (values) that this package suggests work well with it (this will be suggested to the user during installation).",
+            "description": "Suggested packages that can enhance or work well with this package. These are just informational and are displayed after the package is installed, to give your users a hint that they could add more packages, even though they are not strictly required.\nThe format is like package links above, except that the values are free text and not version constraints.",
             "additionalProperties": true
         },
         "config": {
             "type": "object",
-            "description": "Composer options.",
+            "description": "A set of configuration options. It is only used for projects.",
             "properties": {
                 "process-timeout": {
                     "type": "integer",
                     "description": "The timeout in seconds for process executions, defaults to 300 (5mins)."
                 },
                 "allow-plugins": {
-                    "type": ["object", "boolean"],
-                    "description": "Defaults to {}. As of Composer 2.2.0, restricts which Composer plugins are able to execute code during a Composer run. Set it to an object with package name patterns as keys; values are true to allow and false to disallow while suppressing further warnings and prompts. Can also be set to false to disallow all plugins, or true to allow all (NOT recommended).",
+                    "type": [
+                        "object",
+                        "boolean"
+                    ],
+                    "description": "Defaults to `{}`. As of Composer 2.2.0, allows you to restrict which Composer plugins are able to execute code during a Composer run. Set it to an object with package name patterns as keys, values being `true` to allow and `false` to disallow while suppressing further warnings and prompts. You can also set it to `false` to disallow all plugins, or `true` to allow all (NOT recommended).",
                     "additionalProperties": {
                         "type": "boolean"
                     }
@@ -148,12 +160,18 @@
                     "description": "If true, the Composer autoloader will also look for classes in the PHP include path."
                 },
                 "use-parent-dir": {
-                    "type": ["string", "boolean"],
+                    "type": [
+                        "string",
+                        "boolean"
+                    ],
                     "description": "When running Composer in a directory where there is no composer.json, if there is one present in a directory above, Composer will by default ask whether to use it instead. One of: true (always use parent if needed), false (never ask or use it) or \"prompt\" (ask every time), defaults to prompt."
                 },
                 "preferred-install": {
-                    "type": ["string", "object"],
-                    "description": "The install method Composer will prefer to use, defaults to dist (as of Composer 2.1) and can be any of source, dist or auto. Can also be an object with package name patterns as keys for more granular install preferences.",
+                    "type": [
+                        "string",
+                        "object"
+                    ],
+                    "description": "Can be any of `source`, `dist` or `auto`. This option allows you to set the install method Composer will prefer to use.",
                     "additionalProperties": true
                 },
                 "source-fallback": {
@@ -162,7 +180,10 @@
                     "deprecated": "Will be removed in Composer 2.11."
                 },
                 "policy": {
-                    "type": ["object", "boolean"],
+                    "type": [
+                        "object",
+                        "boolean"
+                    ],
                     "description": "Unified security and package policy configuration (security advisories, abandoned packages, malware, and custom policies). Set to false to disable all policy enforcement. Supersedes the deprecated audit.* options.",
                     "additionalProperties": true
                 },
@@ -193,7 +214,11 @@
                     "additionalProperties": true
                 },
                 "gitlab-protocol": {
-                    "enum": ["git", "http", "https"],
+                    "enum": [
+                        "git",
+                        "http",
+                        "https"
+                    ],
                     "description": "A protocol to force when creating a repository URL for the source value of the package metadata. One of git or http (https is treated as a synonym for http). By default Composer generates a git-over-SSH URL for private repositories and HTTP(S) only for public."
                 },
                 "forgejo-domains": {
@@ -220,32 +245,32 @@
                 },
                 "notify-on-install": {
                     "type": "boolean",
-                    "description": "Composer allows repositories to define a notification URL, so that they get notified whenever a package from that repository is installed. This option allows you to disable that behaviour, defaults to true."
+                    "description": "Composer allows repositories to define a notification URL, so that they get notified whenever a package from that repository is installed. This option allows you to disable that behaviour."
                 },
                 "github-protocols": {
                     "type": "array",
-                    "description": "A list of protocols to use when cloning from github.com, in priority order, defaults to [\"https\", \"ssh\", \"git\"].",
+                    "description": "A list of protocols to use for github.com clones, in priority order.",
                     "items": {
                         "type": "string"
                     }
                 },
                 "github-oauth": {
                     "type": "object",
-                    "description": "A hash of domain name => github API oauth tokens, typically {\"github.com\":\"<token>\"}.",
+                    "description": "A list of domain names and oauth keys. Oauthtoken is used to access private repositories on github and to circumvent the low IP-based rate limiting of their API.",
                     "additionalProperties": true
                 },
                 "gitlab-oauth": {
                     "type": "object",
-                    "description": "A hash of domain name => gitlab API oauth tokens, typically {\"gitlab.com\":\"<token>\"}.",
+                    "description": "A list of domain names and oauth keys. Oauthtoken is used to access private repositories on gitlab.",
                     "additionalProperties": true
                 },
                 "disable-tls": {
                     "type": "boolean",
-                    "description": "Defaults to `false`. If set to true all HTTPS URLs will be tried with HTTP instead and no network level encryption is performed. Enabling this is a security risk and is NOT recommended. The better way is to enable the php_openssl extension in php.ini."
+                    "description": "If set to true all HTTPS URLs will be tried with HTTP instead and no network level encryption is performed. Enabling this is a security risk and is NOT recommended. The better way is to enable the php_openssl extension in php.ini."
                 },
                 "cafile": {
                     "type": "string",
-                    "description": "A way to set the path to the openssl CA file. In PHP 5.6+ you should rather set this via openssl.cafile in php.ini, although PHP 5.6+ should be able to detect your system CA file automatically."
+                    "description": "Location of Certificate Authority file on local filesystem. In PHP 5.6+ you should rather set this via openssl.cafile in php.ini, although PHP 5.6+ should be able to detect your system CA file automatically."
                 },
                 "capath": {
                     "type": "string",
@@ -257,45 +282,51 @@
                     "additionalProperties": true
                 },
                 "store-auths": {
-                    "type": ["string", "boolean"],
+                    "type": [
+                        "string",
+                        "boolean"
+                    ],
                     "description": "What to do after prompting for authentication, one of: true (store), false (do not store) or \"prompt\" (ask every time), defaults to prompt."
                 },
                 "platform": {
                     "type": "object",
-                    "description": "This is a hash of package name (keys) and version (values) that will be used to mock the platform packages on this machine.",
+                    "description": "Lets you fake platform packages (PHP and extensions) so that you can emulate a production env or define your target platform in the config.",
                     "additionalProperties": true
                 },
                 "platform-check": {
-                    "type": ["boolean", "string"],
+                    "type": [
+                        "boolean",
+                        "string"
+                    ],
                     "description": "Defaults to \"php-only\" which only checks the PHP version. Set to true to also check the presence of required PHP extensions. If set to false, Composer will not create and require a platform_check.php file as part of the autoloader bootstrap."
                 },
                 "vendor-dir": {
                     "type": "string",
-                    "description": "The location where all packages are installed, defaults to \"vendor\"."
+                    "description": "The location where all packages are installed."
                 },
                 "bin-dir": {
                     "type": "string",
-                    "description": "The location where all binaries are linked, defaults to \"vendor/bin\"."
+                    "description": "The location where all binaries are linked."
                 },
                 "data-dir": {
                     "type": "string",
-                    "description": "The location where old phar files are stored, defaults to \"$COMPOSER_HOME\" except on XDG Base Directory compliant unixes. Should be writable only by the user that owns the Composer installation."
+                    "description": "Defaults to `C:UsersUserAppDataRoamingComposer` on Windows, $XDG_DATA_HOME/composer on unix systems that follow the XDG Base Directory Specifications, and $home on other unix systems. Right now it is only used for storing past composer.phar files to be able to rollback to older versions."
                 },
                 "cache-dir": {
                     "type": "string",
-                    "description": "The location where all caches are located, defaults to \"$COMPOSER_HOME/cache\" on other unix systems, \"$XDG_CACHE_HOME/composer\" on XDG Base Directory compliant unixes, \"/Users/<user>/Library/Caches/composer\" on macOS and \"%LOCALAPPDATA%\\Composer\" on windows."
+                    "description": "Stores all the caches used by composer. See also [COMPOSER_HOME](http://getcomposer.org/doc/03-cli.md#composer-home)."
                 },
                 "cache-files-dir": {
                     "type": "string",
-                    "description": "The location where files (zip downloads) are cached, defaults to \"{$cache-dir}/files\"."
+                    "description": "Stores the zip archives of packages."
                 },
                 "cache-repo-dir": {
                     "type": "string",
-                    "description": "The location where repo metadata (for the composer type and VCS repos of type svn, fossil, github and bitbucket) is cached, defaults to \"{$cache-dir}/repo\"."
+                    "description": "Stores repository metadata for the composer type and the VCS repos of type svn, github and bitbucket."
                 },
                 "cache-vcs-dir": {
                     "type": "string",
-                    "description": "The location where vcs infos (git clones, github api calls, etc. when reading vcs repos) are cached, defaults to \"{$cache-dir}/vcs\"."
+                    "description": "Stores VCS clones for loading VCS repository metadata for the git/hg types and to speed up installs."
                 },
                 "cache-read-only": {
                     "type": "boolean",
@@ -307,19 +338,30 @@
                 },
                 "cache-files-ttl": {
                     "type": "integer",
-                    "description": "The cache time-to-live for files, defaults to the value of cache-ttl."
+                    "description": "Composer caches all dist (zip, tar, ...) packages that it downloads. Those are purged after six months of being unused by default. This option allows you to tweak this duration (in seconds) or disable it completely by setting it to 0."
                 },
                 "cache-files-maxsize": {
-                    "type": ["string", "integer"],
-                    "description": "The cache max size for the files cache, defaults to \"300MiB\"."
+                    "type": [
+                        "string",
+                        "integer"
+                    ],
+                    "description": "Composer caches all dist (zip, tar, ...) packages that it downloads. When the garbage collection is periodically ran, this is the maximum size the cache will be able to use. Older (less used) files will be removed first until the cache fits."
                 },
                 "bin-compat": {
-                    "enum": ["auto", "full", "proxy", "symlink"],
-                    "description": "The compatibility of the binaries, defaults to \"auto\" (automatically guessed), can be \"full\" (compatible with both Windows and Unix-based systems) or \"proxy\" (only create bash/Unix-style proxy files, no .bat files even on Windows/WSL)."
+                    "enum": [
+                        "auto",
+                        "full",
+                        "proxy",
+                        "symlink"
+                    ],
+                    "description": "Defaults to `auto`. Determines the compatibility of the binaries to be installed. If it is auto then Composer only installs .bat proxy files when on Windows. If set to `full` then both .bat files for Windows and scripts for Unix-based operating systems will be installed for each binary. This is mainly useful if you run Composer inside a linux VM but still want the .bat proxies available for use in the Windows host OS."
                 },
                 "discard-changes": {
-                    "type": ["string", "boolean"],
-                    "description": "The default style of handling dirty updates, defaults to false and can be any of true, false or \"stash\"."
+                    "type": [
+                        "string",
+                        "boolean"
+                    ],
+                    "description": "Can be any of `true`, `false` or `stash`. This option allows you to set the default style of handling dirty updates when in non-interactive mode. true will always discard changes in vendors, while `stash` will try to stash and reapply. Use this for CI servers or deploy scripts if you tend to have modified vendors."
                 },
                 "autoloader-suffix": {
                     "type": "string",
@@ -335,7 +377,7 @@
                 },
                 "classmap-authoritative": {
                     "type": "boolean",
-                    "description": "If true, the composer autoloader will not scan the filesystem for classes that are not found in the class map, defaults to false."
+                    "description": "Defaults to false. If true, the Composer autoloader will only load classes from the classmap. Implies optimize-autoloader."
                 },
                 "apcu-autoloader": {
                     "type": "boolean",
@@ -350,22 +392,22 @@
                 },
                 "github-expose-hostname": {
                     "type": "boolean",
-                    "description": "Defaults to true. If set to false, the OAuth tokens created to access the github API will have a date instead of the machine hostname."
+                    "description": "Defaults to true. If false, the OAuth tokens created to access the github API will have a date instead of the machine hostname."
                 },
                 "gitlab-domains": {
                     "type": "array",
-                    "description": "A list of domains to use in gitlab mode. This is used for custom GitLab setups, defaults to [\"gitlab.com\"].",
+                    "description": "A list of domains to use in gitlab mode.",
                     "items": {
                         "type": "string"
                     }
                 },
                 "archive-format": {
                     "type": "string",
-                    "description": "The default archiving format when not provided on cli, defaults to \"tar\"."
+                    "description": "Defaults to tar. Composer allows you to add a default archive format when the workflow needs to create a dedicated archiving format."
                 },
                 "archive-dir": {
                     "type": "string",
-                    "description": "The default archive path when not provided on cli, defaults to \".\"."
+                    "description": "Defaults to .. Composer allows you to add a default archive directory when the workflow needs to create a dedicated archiving format. Or for easier development between modules."
                 },
                 "htaccess-protect": {
                     "type": "boolean",
@@ -376,7 +418,10 @@
                     "description": "Defaults to true. If set to false, Composer will not create a composer.lock file and will ignore it if one is present."
                 },
                 "bump-after-update": {
-                    "type": ["boolean", "string"],
+                    "type": [
+                        "boolean",
+                        "string"
+                    ],
                     "description": "Defaults to false and can be any of true, false, \"dev\" or \"no-dev\". If set to true, Composer will run the bump command after running the update command."
                 },
                 "allow-missing-requirements": {
@@ -386,17 +431,24 @@
                 "update-with-minimal-changes": {
                     "type": "boolean",
                     "description": "Defaults to false. If set to true, Composer will only perform absolutely necessary changes to transitive dependencies during update."
+                },
+                "sort-packages": {
+                    "type": "boolean",
+                    "description": "Defaults to false. If true, the require command keeps packages sorted by name in `composer.json` when adding a new package."
                 }
             }
         },
         "extra": {
-            "type": ["object", "array"],
-            "description": "Arbitrary extra data that can be used by plugins, for example, package of type composer-plugin may have a 'class' key defining an installer class name.",
+            "type": [
+                "object",
+                "array"
+            ],
+            "description": "Arbitrary extra data for consumption by `scripts`.\nThis can be virtually anything. To access it from within a script event handler, you can do:\n\n```\n$extra = $event->getComposer()->getPackage()->getExtra();\n```",
             "additionalProperties": true
         },
         "autoload": {
             "type": "object",
-            "description": "Description of how the package can be autoloaded.",
+            "description": "Autoload mapping for a PHP autoloader.\n\nCurrently [PSR-4](http://www.php-fig.org/psr/psr-4/) autoloading, [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) autoloading, classmap generation and files are supported. PSR-4 is the recommended way though since it offers greater ease of use (no need to regenerate the autoloader when you add classes).\n\nUnder the `psr-4` key you define a mapping from namespaces to paths, relative to the package root. When autoloading a class like `Foo\\Bar\\Baz` a namespace prefix `Foo\\` pointing to a directory `src/` means that the autoloader will look for a file named `src/Bar/Baz.php` and include it if present. Note that as opposed to the older PSR-0 style, the prefix (`Foo\\`) is not present in the file path.\n\nUnder the `psr-0` key you define a mapping from namespaces to paths, relative to the package root. Note that this also supports the PEAR-style non-namespaced convention.",
             "properties": {
                 "psr-0": {
                     "type": "object",
@@ -418,13 +470,13 @@
                 },
                 "exclude-from-classmap": {
                     "type": "array",
-                    "description": "This is an array of patterns to exclude from autoload classmap generation. (e.g. \"exclude-from-classmap\": [\"/test/\", \"/tests/\", \"/Tests/\"]"
+                    "description": "If you want to exclude some files or folders from the classmap you can use the `exclude-from-classmap` property. Useful to exclude test classes in your live environment, for example, as those will be skipped from the classmap even when building an optimized autoloader.\n\nThe paths are absolute from the package root directory, and support `*` to match anything but a slash, and `**` to match anything (`**` is implicitly added to the end of the paths)."
                 }
             }
         },
         "autoload-dev": {
             "type": "object",
-            "description": "Description of additional autoload rules for development purpose (eg. a test suite).",
+            "description": "Same as \"autoload\", but only considered in development mode (root-only).",
             "properties": {
                 "psr-0": {
                     "type": "object",
@@ -447,42 +499,80 @@
             }
         },
         "archive": {
-            "type": ["object"],
-            "description": "Options for creating package archives for distribution.",
+            "type": [
+                "object"
+            ],
+            "description": "Options for creating package archives.\nThe example will include `/dir/foo/bar/file`, `/foo/bar/baz`, `/file.php`, `/foo/my.test` but it will exclude `/foo/bar/any`, `/foo/baz`, and `/my.test`.",
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "Allows configuring base name for archive. By default (if not configured, and --file is not passed as command-line argument), preg_replace('#[^a-z0-9-_]#i', '-', name) is used."
+                    "description": "Allows configuring base name for archive. By default (if not configured, and `--file` is not passed as command-line argument), `preg_replace('#[^a-z0-9-_]#i', '-', name)` is used."
                 },
                 "exclude": {
                     "type": "array",
-                    "description": "A list of patterns for paths to exclude or include if prefixed with an exclamation mark."
+                    "description": "Allows configuring a list of patterns for excluded paths. The pattern syntax matches .gitignore files. A leading exclamation mark (!) will result in any matching files to be included even if a previous pattern excluded them, a leading slash will only match at the beginning of the project relative path and an asterisk will not expand to a directory separator."
                 }
             }
         },
         "repositories": {
-            "type": ["object", "array"],
-            "description": "A set of additional repositories where packages can be found.",
-            "additionalProperties": true
+            "type": [
+                "object",
+                "array"
+            ],
+            "description": "Custom package repositories to use (root-only: repository declarations of dependencies are ignored).\nBy default composer just uses the packagist repository. By specifying repositories you can get packages from elsewhere. Order is significant: Composer looks from the first to the last repository and picks the first match.\n\n\"The `pear` repository type was removed in Composer 2.0. The object (key/value) notation for repositories is deprecated in favor of the array notation, which now also supports a `name` property per repository.\"\n\n- **composer** — The main repository type is the `composer` repository. It uses a single `packages.json` file that contains all of the package metadata. This is also the repository type that packagist uses. To reference a `composer` repository, just supply the path before the `packages.json` file. In case of packagist, that file is located at `/packages.json`, so the URL of the repository would be `repo.packagist.org`. For `example.org/packages.json` the repository URL would be `example.org`. See the [full documentation](http://getcomposer.org/doc/05-repositories.md#composer).\n\n- **vcs** — VCS stands for version control system. This includes versioning systems like git, svn or hg. Composer has a repository type for installing packages from these systems. See the [full documentation](http://getcomposer.org/doc/05-repositories.md#vcs).\n\n- **package** — If you want to use a project that does not support composer through any of the means above, you still can define the package yourself by using a `package` repository. Basically, you define the same information that is included in the `composer` repository's `packages.json`, but only for a single package. Again, the minimum required fields are `name`, `version`, and either of `dist` or `source`. See the [full documentation](http://getcomposer.org/doc/05-repositories.md#package).\n\n- **artifact** — There are some cases, when there is no ability to have one of the previously mentioned repository types online, even the VCS one. Typical example could be cross-organisation library exchange through built artifacts. Of course, most of the times they are private. To simplify maintenance, one can simply use a repository of type `artifact` with a folder containing ZIP archives of those private packages. See the [full documentation](http://getcomposer.org/doc/05-repositories.md#artifact).\n\n- **path** — In addition to the artifact repository, you can use the path one, which allows you to depend on a relative directory. This can be especially useful when dealing with monolith repositories. See the [full documentation](http://getcomposer.org/doc/05-repositories.md#path).\n\n- **disabling packagist.org** — You can disable the default Packagist.org repository by adding this to your `composer.json`. See the [full documentation](https://getcomposer.org/doc/05-repositories.md#disabling-packagist-org).\n\n",
+            "additionalProperties": true,
+            "items": {
+                "type": "object",
+                "description": "A custom package repository definition. The `type` key selects the repository type.",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "Repository type: `composer` (packagist-like metadata), `vcs` (git/svn/hg), `package` (inline package definition), `artifact` (folder of zips) or `path` (local directory). See the `repositories` documentation for details on each type.",
+                        "enum": [
+                            "composer",
+                            "vcs",
+                            "package",
+                            "artifact",
+                            "path"
+                        ]
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "URL or path of the repository. The meaning depends on the repository type (e.g. the host serving `packages.json` for `composer`, a VCS URL for `vcs`, a directory of zips for `artifact`, a relative directory for `path`)."
+                    },
+                    "packagist.org": {
+                        "description": "Set to `false` to disable the default packagist.org repository."
+                    }
+                },
+                "additionalProperties": true
+            }
         },
         "minimum-stability": {
-            "type": ["string"],
-            "description": "The minimum stability the packages must have to be install-able. Possible values are: dev, alpha, beta, RC, stable.",
+            "type": [
+                "string"
+            ],
+            "description": "This defines the default behavior for filtering packages by stability. This defaults to `stable`, so if you rely on a `dev` package, you should specify it in your file to avoid surprises.\nAll versions of each package are checked for stability, and those that are less stable than the `minimum-stability` setting will be ignored when resolving your project dependencies. Specific changes to the stability requirements of a given package can be done in `require` or `require-dev`.Available options are `dev`, `alpha`, `beta`, `RC`, and `stable` (root-only).",
             "pattern": "^dev|alpha|beta|rc|RC|stable$"
         },
         "prefer-stable": {
-            "type": ["boolean"],
-            "description": "If set to true, stable packages will be preferred to dev packages when possible, even if the minimum-stability allows unstable packages."
+            "type": [
+                "boolean"
+            ],
+            "description": "When this is enabled, Composer will prefer more stable packages over unstable ones when finding compatible stable packages is possible. If you require a dev version or only alphas are available for a package, those will still be selected granted that the minimum-stability allows for it (root-only)."
         },
         "bin": {
-            "type": ["array"],
-            "description": "A set of files that should be treated as binaries and symlinked into bin-dir (from config).",
+            "type": [
+                "array"
+            ],
+            "description": "A set of files that should be treated as binaries and symlinked into the `bin-dir` (from config).",
             "items": {
                 "type": "string"
             }
         },
         "include-path": {
-            "type": ["array"],
+            "type": [
+                "array"
+            ],
             "description": "DEPRECATED: A list of directories which should get added to PHP's include path. This is only present to support legacy projects, and all new code should preferably use autoloading.",
             "deprecated": "Deprecated: only present to support legacy projects, prefer autoloading; no removal scheduled.",
             "items": {
@@ -490,85 +580,135 @@
             }
         },
         "scripts": {
-            "type": ["object"],
-            "description": "Scripts listeners that will be executed before/after some events.",
+            "type": [
+                "object"
+            ],
+            "description": "Composer allows you to hook into various parts of the installation process through the use of scripts.\nA script is a callback (defined as a static method) or a shell command that will be called when the event it listens on is triggered.\n Let's take a look to the full list of [Event Types](http://getcomposer.org/doc/articles/scripts.md#event-types).\n\n`scripts` is a root-only field. Custom scripts can also get descriptions via `scripts-descriptions` and aliases via `scripts-aliases`.",
             "properties": {
                 "pre-install-cmd": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs before the install command is executed, contains one or more Class::method callables or shell commands."
                 },
                 "post-install-cmd": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs after the install command is executed, contains one or more Class::method callables or shell commands."
                 },
                 "pre-update-cmd": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs before the update command is executed, contains one or more Class::method callables or shell commands."
                 },
                 "post-update-cmd": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs after the update command is executed, contains one or more Class::method callables or shell commands."
                 },
                 "pre-status-cmd": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs before the status command is executed, contains one or more Class::method callables or shell commands."
                 },
                 "post-status-cmd": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs after the status command is executed, contains one or more Class::method callables or shell commands."
                 },
                 "pre-package-install": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs before a package is installed, contains one or more Class::method callables or shell commands."
                 },
                 "post-package-install": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs after a package is installed, contains one or more Class::method callables or shell commands."
                 },
                 "pre-package-update": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs before a package is updated, contains one or more Class::method callables or shell commands."
                 },
                 "post-package-update": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs after a package is updated, contains one or more Class::method callables or shell commands."
                 },
                 "pre-package-uninstall": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs before a package has been uninstalled, contains one or more Class::method callables or shell commands."
                 },
                 "post-package-uninstall": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs after a package has been uninstalled, contains one or more Class::method callables or shell commands."
                 },
                 "pre-autoload-dump": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs before the autoloader is dumped, contains one or more Class::method callables or shell commands."
                 },
                 "post-autoload-dump": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs after the autoloader is dumped, contains one or more Class::method callables or shell commands."
                 },
                 "post-root-package-install": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs after the root-package is installed, contains one or more Class::method callables or shell commands."
                 },
                 "post-create-project-cmd": {
-                    "type": ["array", "string"],
+                    "type": [
+                        "array",
+                        "string"
+                    ],
                     "description": "Occurs after the create-project command is executed, contains one or more Class::method callables or shell commands."
                 }
             }
         },
         "scripts-descriptions": {
             "type": "object",
-            "description": "Descriptions for the custom commands defined in scripts, shown by composer list and composer run -l instead of the default 'Runs the ... script as defined in composer.json'.",
+            "description": "Descriptions for the custom commands defined in `scripts`, shown by `composer list` and `composer run -l` instead of the default \"Runs the ... script as defined in composer.json\".",
             "additionalProperties": {
                 "type": "string"
             }
         },
         "scripts-aliases": {
             "type": "object",
-            "description": "Alternate names for the custom commands defined in scripts, as an array of strings per script. Available as of Composer 2.7.",
+            "description": "Alternate names for the custom commands defined in `scripts`, as an array of strings per script. Available as of Composer 2.7.",
             "additionalProperties": {
                 "type": "array",
                 "items": {
@@ -591,17 +731,17 @@
                 },
                 "issues": {
                     "type": "string",
-                    "description": "URL to the issue tracker.",
+                    "description": "URL to the Issue Tracker.",
                     "format": "uri"
                 },
                 "forum": {
                     "type": "string",
-                    "description": "URL to the forum.",
+                    "description": "URL to the Forum.",
                     "format": "uri"
                 },
                 "wiki": {
                     "type": "string",
-                    "description": "URL to the wiki.",
+                    "description": "URL to the Wiki.",
                     "format": "uri"
                 },
                 "irc": {
@@ -628,22 +768,36 @@
                     "type": "string",
                     "description": "URL to the vulnerability disclosure policy (VDP).",
                     "format": "uri"
+                },
+                "chat": {
+                    "type": "string",
+                    "description": "URL to the chat channel.",
+                    "format": "uri"
                 }
-            }
+            },
+            "description": "Various information to get support about the project."
         },
         "non-feature-branches": {
-            "type": ["array"],
+            "type": [
+                "array"
+            ],
             "description": "A set of string or regex patterns for non-numeric branch names that will not be handled as feature branches.",
             "items": {
                 "type": "string"
             }
         },
         "abandoned": {
-            "type": ["boolean", "string"],
+            "type": [
+                "boolean",
+                "string"
+            ],
             "description": "Indicates whether this package has been abandoned, it can be boolean or a package name/URL pointing to a recommended alternative. Defaults to false."
         },
         "_comment": {
-            "type": ["string", "array"],
+            "type": [
+                "string",
+                "array"
+            ],
             "description": "Top level key used as a place to store comments (it can be a string or array of strings).",
             "items": {
                 "type": "string"
